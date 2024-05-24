@@ -1,4 +1,4 @@
 $(function(){
-  $("#pci_scandinavia").load("pci_scandinavia.html"); 
+  $("#pci_scandinavia").load("img/pci_scandinavia.html"); 
 });
 
