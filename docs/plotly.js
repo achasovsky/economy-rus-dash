@@ -1,4 +1,4 @@
-$(function(){
+$(function() {
   $("#includedContent").load("plot.html"); 
 });
 
