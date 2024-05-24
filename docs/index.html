@@ -11,6 +11,13 @@
     <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+
+        $(function(){
+          $("#pci_scandinavia").load("pci_scandinavia.html"); 
+        });
+        
+    </script>
 </head>
 <body>
 <div id="content">
@@ -69,11 +76,6 @@
     <h2 id='dataset'>
         Описание датасета
     </h2>
-    <space></space>
-    <iframe 
-        src='//plotly.com/~alexander.chasovsky/16.embed'
-        width='800' height='320'
-        frameborder='0' scrolling='no'></iframe>
     <space></space>
     <img src='img/full_data_lineplot.png'>
     <space></space>
