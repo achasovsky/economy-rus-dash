@@ -40,7 +40,9 @@ import matplotlib.dates as mdates
 from dash import Dash, html, dcc, callback, Output, Input
 from __functions import *
 
-
+path_files = '/files'
+economics_data = loadit('economics_data', path=path_files, create_empty_dict=True)
+prices_food_growth = economics_data['prices_food_growth'].copy()
 
 df1 = smoothed(prices_food_growth, datetime_index=True)
 df2 = prices_food_growth.copy()
