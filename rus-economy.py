@@ -48,12 +48,17 @@ prices_food_growth = economics_data['prices_food_growth'].copy()
 df1 = smoothed(prices_food_growth, datetime_index=True)
 df2 = prices_food_growth.copy()
 
+markdown_text = '''
+    Статистические данные об относительном изменении цен с января 2021 года
+'''
+
 app = Dash()
 
 app.layout = [
     html.H1(children='Динамика цен на продукты питания', style={'textAlign':'left', 'font-family': 'Ubuntu'}),
+    html.H2(children=markdown_text, style={'textAlign':'right'}),
     dcc.Dropdown(options=df1.columns, value='овощи', id='dropdown-selection', style={'textAlign':'left', 'font-family': 'Ubuntu'}),
-    dcc.Graph(id='graph-content')]
+    dcc.Graph(id='graph-content', style={'width': '100%', 'height': '100%'})]
 
 @callback(
     Output('graph-content', 'figure'),
