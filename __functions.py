@@ -31,7 +31,7 @@ import math
 import statsmodels
 import statsmodels.stats.api as sms
 
-from scipy import stats
+# from scipy import stats
 
 
 # ----------------------------------------------------------------------------
@@ -224,7 +224,7 @@ def arange(
     return arr
 
 
-def saturate_color(color, saturation=0.75):
+def saturate_color(color, saturation=0.75, return_type='RGB'):
 
     if isinstance(color, str):
         color_rgb = mpl.colors.to_rgb(color)
@@ -237,6 +237,11 @@ def saturate_color(color, saturation=0.75):
         color_hls[0], color_hls[1], saturation*color_hls[2])
     color_rgb_saturated = colorsys.hls_to_rgb(
         color_hls_saturated[0], color_hls_saturated[1], color_hls_saturated[2])
+
+    if return_type == 'RGB':
+        pass
+    elif return_type == 'HEX':
+        color_rgb_saturated = mpl.colors.to_hex(color_rgb_saturated)
     
     return color_rgb_saturated
 
@@ -246,27 +251,33 @@ def saturate_palette(palette, saturation=0.75):
     return palette_saturated
 
 
-def alpha_color(color, alpha=0.75):
+def alpha_color(color, alpha=0.75, return_type='RGB'):
     
     if isinstance(color, str):
         color = mpl.colors.to_rgb(color)
         
     new_color = tuple (x + (1 - x) * (1 - alpha) for x in color)
+
+    if return_type == 'RGB':
+        pass
+    elif return_type == 'HEX':
+        new_color = mpl.colors.to_hex(new_color)
+    
     return new_color
 
 
-def alpha_palette(palette, alpha=0.75):
-    palette_alphed = [alpha_color(i, alpha=alpha) for i in palette]
+def alpha_palette(palette, alpha=0.75, return_type='RGB'):
+    palette_alphed = [alpha_color(i, alpha=alpha, return_type=return_type) for i in palette]
     return palette_alphed
 
 
-def loadit(name, dir='files', create_empty_dict=False):
+def loadit(name, path='files', create_empty_dict=False):
     '''
     'create_empty_dict' == True --> function will create empty dictionary,
                                     if there is no such file in directory
     '''
     try:
-        result = pd.read_pickle(f'{dir}/{name}.pkl')
+        result = pd.read_pickle(f'{path}/{name}.pkl')
         return result
     except FileNotFoundError:
         print(f"File '{name}' not found")
@@ -278,54 +289,54 @@ def loadit(name, dir='files', create_empty_dict=False):
             pass
 
 
-def saveit(file, name, dir='files'):
+def saveit(file, name, path='files'):
     # check if dir exists and create it if not
-    if not os.path.exists(dir):
-        os.mkdir(dir)
+    if not os.path.exists(path):
+        os.mkdir(path)
     # save file
-    filehandler = open(f'{dir}/{name}.pkl', 'wb') 
+    filehandler = open(f'{path}/{name}.pkl', 'wb') 
     pickle.dump(file, filehandler)
     filehandler.close()
-    print(f"File '{name}.pkl' saved in directory '{dir}'")
+    print(f"File '{name}.pkl' saved")
 
 
-def savefig(name, dir=None, format='both', dpi=100, transparent=True,  figure=None, **kwargs):
+def savefig(name, path=None, format='both', dpi=100, transparent=True,  figure=None, **kwargs):
     '''
     Saves figure
     '''
-    if dir is None:
-        dir = os.getcwd()
+    if path is None:
+        path = os.getcwd()
     # check if dir exists and create it if not
-    if not os.path.exists(dir):
-        os.makedirs(dir)
+    if not os.path.exists(path):
+        os.makedirs(path)
     if format == 'both':
         figure.savefig(
-            f'{dir}{name}.png',
+            f'{path}{name}.png',
             transparent=transparent,
             bbox_inches='tight',
             dpi=dpi,
             format='png',
             **kwargs)
         figure.savefig(
-            f'{dir}{name}.svg',
+            f'{path}{name}.svg',
             transparent=transparent,
             bbox_inches='tight',
             dpi=dpi,
             format='svg',
             **kwargs)
         
-        print(f"Images '{name}.png' and '{name}.svg' successfully saved into '{dir}' directory")
+        print(f"Images '{name}.png' and '{name}.svg' successfully saved into '{path}' directory")
         
     else:
         figure.savefig(
-            f'{dir}{name}.{format}',
+            f'{path}{name}.{format}',
             transparent=transparent,
             bbox_inches='tight',
             dpi=dpi,
             format=format,
             **kwargs)
         
-        print(f"Image '{name}.{format}' successfully saved into '{dir}' directory")
+        print(f"Image '{name}.{format}' successfully saved into '{path}' directory")
 
 
 def order_X_y(data, target):
@@ -459,18 +470,16 @@ def to_int(x, errors=False):
             print(f'ValueError: {x}')
 
 
-def to_string(x):
+def to_string(x, errors=False):
     '''
     Convert x to String if possible
     '''
     try:
         return str(x)
     except ValueError:
-        print(f'ValueError: {x}')
         return x
-    except TypeError:
-        print(f'ValueError: {x}')
-        return x
+        if errors:
+            print(f'ValueError: {x}')
 
 
 def not_none(x):
@@ -954,12 +963,13 @@ def normalized_by_first(data, return_type='df'):
         third_value = third_value / first_value
     '''
     
-    first_value = data[0]
+    first_value = data.iloc[0]
+    name = data.name
     
     data_new = [(x/first_value) for x in data]
 
     if return_type == 'df':
-        df = pd.DataFrame(data=data_new, index=data.index)
+        df = pd.DataFrame(data=data_new, columns=[name], index=data.index)
         return df
     if return_type == 'series':
         series = pd.Series(data=data_new, index=data.index)
@@ -976,26 +986,35 @@ def normalized_by_first(data, return_type='df'):
     return data_new
 
 
-def normalized(data, reshape=True, return_type='df'):
+def difference_by_first(data, return_type='df'):
 
     '''
-    MinMaxScaler 0/1 
+    Normalize kind: 
+        first_value == first_value
+        second_value = second_value - first_value
+        third_value = third_value - first_value
     '''
     
-    if (isinstance(data, pd.Series) | 
-        isinstance(data, pd.DataFrame)):
-        idxs = data.index.copy()
-    if reshape:
-        data = np.array(data).reshape(-1, 1)
-    data_new = MinMaxScaler().fit_transform(data)
+    first_value = data.iloc[0]
+    name = data.name
+    
+    data_new = [(x - first_value) for x in data]
+
     if return_type == 'df':
-        data_new = pd.DataFrame(data=data_new, index=idxs)
+        df = pd.DataFrame(data=data_new, columns=[name], index=data.index)
+        return df
+    if return_type == 'series':
+        series = pd.Series(data=data_new, index=data.index)
+        return series
     elif return_type == 'array':
-        pass
+        array = np.array(data_new)
+        return array
+    elif return_type == 'list':
+        lst = list(data_new)
+        return lst
     else:
-        print("return_type must be 'df' or 'array'")
-        return None
-        
+        print("'return_type' must be 'df', 'series', 'array', 'list'")
+    
     return data_new
 
 
@@ -2101,6 +2120,13 @@ def axis_add_date_xaxis(
 # 5. Special__ functions
 
 
+def pl_subplots(rows, cols, figsize=(750, 300), adjust=0.2, **kwargs):
+
+    fig = make_subplots(rows=rows, cols=cols, vertical_spacing=adjust, **kwargs)
+    fig.update_layout(width=figsize[0], height=figsize[1])
+    return fig
+
+
 def pl_legend_title(title, figure=None):
     figure = figure or fig
     figure.update_layout(legend_title_text=title)
@@ -2116,6 +2142,20 @@ def pl_figure(figsize=(750, 250)):
         height=figsize[1])
 
     return fig
+
+def pl_hline(
+        y=0,
+        width=1,
+        color='black',
+        line_dash='3px',
+        opacity=0.3,
+        figure=None,
+        **kwargs):
+    
+    figure = figure or fig
+    fig.add_hline(
+        y=y, line_dash=line_dash, opacity=opacity,
+        line=dict(width=width, color=color), **kwargs)
 
 
 def pl_plot(plot, figure=None):
@@ -2196,7 +2236,7 @@ def pl_rstyle(xticks=None, xlim=None, yticks=None, ylim=None):
             fig.update_yaxes(range=ylim)
 
 
-def pl_savefig(figure=None, name=None, dir=None, config=None, fmt='html'):
+def pl_savefig(figure=None, name=None, path=None, config=None, fmt='html'):
 
     figure = figure or fig
     
@@ -2205,30 +2245,32 @@ def pl_savefig(figure=None, name=None, dir=None, config=None, fmt='html'):
         print("Figure saved into Chart-studio")
         
     elif fmt == 'html':
-        # check if dir exists and create it if not
-        if dir is None:
-            dir = os.getcwd()
-            folder = dir.split(os.sep)[-1]
+        # check if path exists and create it if not
+        if path is None:
+            path = os.getcwd()
+            folder = path.split(os.sep)[-1]
         else:
-            folder = dir
-        filename = dir+'/'+name+'.'+fmt
+            folder = path
+        if not os.path.exists(path):
+            os.makedirs(path)
+        filename = path+'/'+name+'.'+fmt
         plotly.offline.plot(figure, filename=filename, config=config, auto_open=False)
-        print(f"File '{name+'.'+fmt}' saved into folder '{folder}'")
+        print(f"File '{name+'.'+fmt}' saved")
     
     else:
-        # check if dir exists and create it if not
-        if dir is None:
-            dir = os.getcwd()
-            folder = dir.split(os.sep)[-1]
+        # check if path exists and create it if not
+        if path is None:
+            path = os.getcwd()
+            folder = path.split(os.sep)[-1]
         else:
-            folder = dir
-        if not os.path.exists(dir):
-            os.makedirs(dir)
+            folder = path
+        if not os.path.exists(path):
+            os.makedirs(path)
 
-        filename = dir+'/'+name+'.'+fmt
+        filename = path+'/'+name+'.'+fmt
         figure.write_image(filename, engine='kaleido')
         
-        print(f"File '{name+'.'+fmt}' saved into folder '{folder}'")
+        print(f"File '{name+'.'+fmt}' saved")
 
 def pl_grid(grid=False, figure=None):
 
@@ -2534,4 +2576,93 @@ def get_data_two_level(data, level0=None, level1=None, indexes=None, kind='colum
         return df.T
     if kind == 'column':
         return df
+
+
+def pl_dates_translate(dates):
+    '''
+    input : ['January 2021', 'February 2021', 'March 2021']
+    output : ['Янв \n 2021', 'Фев 2021', 'Мар 2021']
+    
+    January 2021 --> Янв \n 2021
+    February 2021 --> Фев
+    '''
+    
+    dates_translated = []
+    
+    for i in dates:
+        i_split = i.split()
+        i_month = i_split[0]
+        i_year = i_split[1]
+        i_month_translated = months_translate(i_month, 'eng-rus')
+        i_month_translated_cut = i_month_translated[:3]
+        if i_month == 'January':
+            i_month_translated_cut = i_month_translated_cut + '<br>' + i_year
+        # i_month_translated_cut = i_month_translated_cut + ' ' + i_year
+            
+        dates_translated.append(i_month_translated_cut) 
+
+    return dates_translated
+
+
+def pl_tickaliases(years):
+
+    months_eng = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
+        'Sep', 'Oct', 'Nov', 'Dec'
+    ]
+    months_rus = [
+        'Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг',
+        'Сен', 'Окт', 'Ноя', 'Дек'
+    ]
+
+    result = {}
+
+    for year in years:
+        for e, r in zip(months_eng, months_rus):
+            e_w_year = e + '<br>' + str(year)
+            if e == 'Jan':
+                r = r + '<br>' + str(year)
+            result[e_w_year] = r
+
+    return result
+
+
+def pl_xticks_months(years, type='ticks', language='rus'):
+
+    months_eng = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
+        'Sep', 'Oct', 'Nov', 'Dec'
+    ]
+    months_rus = [
+        'Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг',
+        'Сен', 'Окт', 'Ноя', 'Дек'
+    ]
+
+    result = []
+
+    if language == 'rus':
+        months = months_rus
+    if language == 'eng':
+        months = months_eng
+
+    if type == 'labels':
+        sep = '<br>'
+    elif type == 'ticks':
+        sep = ', '
         
+    for year in years:
+        for month in months:
+            if type == 'ticks':
+                sep = ', '
+                value = month + sep + str(year)
+            elif type == 'labels':
+                sep = '<br>'
+                if (month == 'Jan') | (month == 'Янв'):
+                    value = month + sep + str(year)
+                else:
+                    value = month
+            elif type == 'only_months':
+                    value = month
+            result.append(value)
+
+    return result
