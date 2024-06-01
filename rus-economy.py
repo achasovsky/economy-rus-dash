@@ -53,7 +53,7 @@ app = Dash()
 app.layout = [
     html.H1(children='Динамика цен на продукты питания', style={'textAlign':'left', 'font-family': 'Ubuntu'}),
     dcc.Dropdown(options=df1.columns, value='овощи', id='dropdown-selection', style={'textAlign':'left', 'font-family': 'Ubuntu'}),
-    dcc.Graph(id='graph-content', style={'width': '90%', 'height': '90%'})]
+    dcc.Graph(id='graph-content')]
 
 @callback(
     Output('graph-content', 'figure'),
