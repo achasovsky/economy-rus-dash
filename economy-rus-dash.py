@@ -1021,7 +1021,7 @@ content_under_development = html.Div([
     html.Div(
         [html.Img(src='assets/under-construction.png', style={'width':'5vw'})],
         style={'margin-top':'1vh', 'display':'flex', 'justify-content':'center'}),
-    html.Div(['Станица находится в разработке'], style={'font-size':'1.25em', 'text-align': 'center', 'margin-top':'1vh'}),
+    html.Div(['Станица находится в разработке'], style={'font-size':'1em', 'text-align': 'center', 'margin-top':'1vh'}),
     # html.Div(['404'], style={'font-size':'5em', 'font-weight':'500', 'text-align': 'center'})
 ], className='main-container', style={'display': 'flex', 'display':'flex;', 'justify-content':'center'})
 
