@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Geologica Roman';
+  src: url('fonts/Geologica-Regular.ttf') format("truetype");
+}
+
 body {
   background: #FFFFFF;
 }
