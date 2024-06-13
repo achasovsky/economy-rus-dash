@@ -81,7 +81,6 @@ html hr {
     /* display: flex; */
     /* justify-content: center; */
     float: left;
-    width: 100%;
 }
 
 
@@ -477,7 +476,7 @@ input[type='radio']:focus {
 input[type='radio']:checked {
     border-color: #FFFFFF;
     background-color: #31629A;
-    background-color: #505050;
+    /* background-color: #505050; */
 }
 
 

@@ -603,7 +603,7 @@ fig_cpi_real_time_trend.add_trace(
     ), row=2, col=1
 )
 fig_cpi_real_time_trend.add_annotation(
-    text='1). Среднее значение совокупной инфляции по всем группам товаров за 5 недель.',
+    text='1). Используется среднее значение совокупной инфляции по всем группам товаров за 5 недель.',
     x=-0.005, y=-0.275,
     xref="paper", yref="paper",
     showarrow=False,
@@ -1191,7 +1191,7 @@ page_prices = html.Div([
                               'margin':'auto 0',
                               'display':'flex',
                               'align-items': 'center',
-                              'font-size':'1em'
+                              'font-size':'1em',
                           # 'justify-content': 'center',
                           # 'border':'1px solid green'
                          }),
@@ -1210,8 +1210,8 @@ page_prices = html.Div([
                     # prices structures
                     html.Div([
                         dcc.Graph(
-                                    id='prices-structure', className='graph-figure',
-                                    figure=fig_price_structure, config=config_wo_modebar)
+                            id='prices-structure', className='graph-figure',
+                            figure=fig_price_structure, config=config_wo_modebar)
                         ], style={'width':'100%', 'height':'28vh', 'float':'left', 'padding-left':'2vw', 'padding-right':'2vw'}),
                     ], style={'width':'65vw', 'height':'30vh', 'display':'inline-block'}),
             ], className='content-container', style={'width':'80vw', 'height':'72vh', 'display':'inline-block'}),
