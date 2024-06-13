@@ -1206,7 +1206,6 @@ page_prices = html.Div([
                     # title
                     html.H5('Структура цены', style={
                         'font-size':'0.9em',
-                        'font-weight':'500',
                         'text-align':'left',
                         'margin-left':'3.5vw'
                     }),
