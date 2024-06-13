@@ -1443,6 +1443,7 @@ app = Dash(
     suppress_callback_exceptions=True
 )
 server = app.server
+
 app.layout = html.Div(
     [dcc.Location(id="url"), content],
     style={'font-family': [font_family, 'system-ui', 'Open Sans']}
