@@ -603,7 +603,7 @@ fig_cpi_real_time_trend.add_trace(
     ), row=2, col=1
 )
 fig_cpi_real_time_trend.add_annotation(
-    text='1). Используется среднее значение совокупной инфляции по всем группам товаров за 5 недель.',
+    text='1). Используется средняя инфляция по всем группам товаров за 5 недель.',
     x=-0.005, y=-0.275,
     xref="paper", yref="paper",
     showarrow=False,
@@ -1018,9 +1018,12 @@ header_small_inflation_90 = html.Div([
 ])
 
 content_under_development = html.Div([
-    html.Div(['Станица в разработке'], style={'font-size':'1em', 'text-align': 'center', 'margin-top':'2vh'}),
-    html.Div(['404'], style={'font-size':'5em', 'font-weight':'500', 'text-align': 'center'})
-], className='main-container', style={'display': 'flex', 'display':'inline-block', 'justify-content':'center'})
+    html.Div(
+        [html.Img(src='assets/under-construction.png', style={'width':'5vw'})],
+        style={'margin-top':'1vh', 'display':'flex', 'justify-content':'center'}),
+    html.Div(['Станица находится в разработке'], style={'font-size':'1.25em', 'text-align': 'center', 'margin-top':'1vh'}),
+    # html.Div(['404'], style={'font-size':'5em', 'font-weight':'500', 'text-align': 'center'})
+], className='main-container', style={'display': 'flex', 'display':'flex;', 'justify-content':'center'})
 
 page_start = html.Div([
     # header
@@ -1205,7 +1208,7 @@ page_prices = html.Div([
                         'font-size':'0.9em',
                         'font-weight':'500',
                         'text-align':'left',
-                        'margin-left':'1vw'
+                        'margin-left':'3.5vw'
                     }),
                     # prices structures
                     html.Div([
@@ -1364,6 +1367,7 @@ def update_prices_gowth_plot(value, figure1, figure2):
     if value == 'Овощи':
         fig_price_structure = go.Figure()
         fig_price_structure.update_layout(
+            margin=dict(l=75),
             xaxis=dict(
                 visible=False
                 ),
@@ -1372,9 +1376,9 @@ def update_prices_gowth_plot(value, figure1, figure2):
                 ),
             annotations=[
                 dict(
-                    text= "Росстат не предоставляет информацию по данной категории",
+                    text= "Росстат не предоставляет информацию по данной категории.",
                     xref= "paper", yref= "paper",
-                    x=0, y=1.05,
+                    x=-0.077, y=1.05,
                     showarrow= False,
                     font= {"size": 15}
                     )
