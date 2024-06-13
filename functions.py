@@ -30,6 +30,7 @@ import pickle
 import math
 import statsmodels
 import statsmodels.stats.api as sms
+import plotly.graph_objects as go
 
 # from scipy import stats
 
@@ -224,6 +225,14 @@ def arange(
     return arr
 
 
+def concatenate_dicts(dict1, dict2):
+
+    dict_new = dict1.copy()
+    dict_new.update(dict2)
+
+    return dict_new
+
+
 def saturate_color(color, saturation=0.75, return_type='RGB'):
 
     if isinstance(color, str):
@@ -246,8 +255,8 @@ def saturate_color(color, saturation=0.75, return_type='RGB'):
     return color_rgb_saturated
 
 
-def saturate_palette(palette, saturation=0.75):
-    palette_saturated = [saturate_color(i, saturation=saturation) for i in palette]
+def saturate_palette(palette, saturation=0.75, return_type='RGB'):
+    palette_saturated = [saturate_color(i, saturation=saturation, return_type=return_type) for i in palette]
     return palette_saturated
 
 
@@ -1462,7 +1471,12 @@ def to_date(x, kind='%B %Y', translate=False):
     return x
 
 
-def months_translate(x, kind='rus-eng', add_year=None, capitalize=True):
+def months_translate(
+        x,
+        kind='rus-eng',
+        add_year=None,
+        capitalize=True,
+        sklon=False):
 
     '''
     Transform russian month name to english
@@ -1470,6 +1484,8 @@ def months_translate(x, kind='rus-eng', add_year=None, capitalize=True):
     
     if add_year==2021: 'январь' --> 'January 2021'
     if capitalize==False: 'январь' --> 'january'
+    if sklon=='rod': 'January' --> 'Января'
+    if sklon=='pred': 'January' --> 'Январе'
     '''
     
     # lowercase data
@@ -1488,23 +1504,67 @@ def months_translate(x, kind='rus-eng', add_year=None, capitalize=True):
             'сентябрь': 'september',
             'октябрь': 'october',
             'ноябрь': 'november',
-            'декабрь': 'december'
+            'декабрь': 'december',
+
+            'января': 'january',
+            'февраля': 'february',
+            'марта': 'march',
+            'апреля': 'april',
+            'мая': 'may',
+            'июня': 'june',
+            'июля': 'july',
+            'августа': 'august',
+            'сентября': 'september',
+            'октября': 'october',
+            'ноября': 'november',
+            'декабря': 'december',
         }
     elif kind == 'eng-rus':
-        repalce_dict = {
-            'january': 'январь',
-            'february': 'февраль',
-            'march': 'март',
-            'april': 'апрель',
-            'may': 'май',
-            'june': 'июнь',
-            'july': 'июль',
-            'august': 'август',
-            'september': 'сентябрь',
-            'october': 'октябрь',
-            'november': 'ноябрь',
-            'december': 'декабрь'
-        }
+        if sklon == 'rod':
+            repalce_dict = {
+                'january': 'января',
+                'february': 'февраля',
+                'march': 'марта',
+                'april': 'апреля',
+                'may': 'мая',
+                'june': 'июня',
+                'july': 'июля',
+                'august': 'августа',
+                'september': 'сентября',
+                'october': 'октября',
+                'november': 'ноября',
+                'december': 'декабря'
+            }
+        if sklon == 'pred':
+            repalce_dict = {
+                'january': 'январе',
+                'february': 'феврале',
+                'march': 'марте',
+                'april': 'апреле',
+                'may': 'мае',
+                'june': 'июне',
+                'july': 'июле',
+                'august': 'августе',
+                'september': 'сентябре',
+                'october': 'октябре',
+                'november': 'ноябре',
+                'december': 'декабре'
+            }
+        else:
+            repalce_dict = {
+                'january': 'январь',
+                'february': 'февраль',
+                'march': 'март',
+                'april': 'апрель',
+                'may': 'май',
+                'june': 'июнь',
+                'july': 'июль',
+                'august': 'август',
+                'september': 'сентябрь',
+                'october': 'октябрь',
+                'november': 'ноябрь',
+                'december': 'декабрь'
+            }
     else:
         print("'kind' must be 'rus-eng' or 'eng-rus'")
     # for all keys and values in dict, replace x by value if x and key are equal
@@ -1521,6 +1581,30 @@ def months_translate(x, kind='rus-eng', add_year=None, capitalize=True):
         x_new = x_new + ' ' + str(add_year)
 
     return x_new
+
+
+def date_translate(
+        date,
+        date_format='%B %Y',
+        kind='rus-eng',
+        capitalize=True,
+        sklon=False):
+
+    date_split = date.split()
+    zero_arg = date_split[0]
+    first_arg = date_split[1]
+
+    if (date_format == '%B %Y') | (date_format == '%B %d'):
+        month_translated = \
+            months_translate(zero_arg, kind=kind, capitalize=capitalize, sklon=sklon)
+        new_date = month_translated + ' ' + first_arg
+
+    elif date_format == '%d %B':
+        month_translated = \
+            months_translate(first_arg, kind=kind, capitalize=capitalize, sklon=sklon)
+        new_date = zero_arg + ' ' + month_translated
+    
+    return new_date
 
 
 def set_location(loc='EN'):
@@ -2153,7 +2237,7 @@ def pl_hline(
         **kwargs):
     
     figure = figure or fig
-    fig.add_hline(
+    figure.add_hline(
         y=y, line_dash=line_dash, opacity=opacity,
         line=dict(width=width, color=color), **kwargs)
 
@@ -2195,6 +2279,56 @@ def pl_labels(x=None, y=None, figure=None):
             text=y,
             font=dict(weight='bold'),
             standoff=10))
+
+
+def pl_xticklabels_rus(
+        years,
+        add_year='jan',
+        fullname=False,
+        language='rus'):
+
+    result = []
+
+    if language == 'rus':
+        if fullname:
+            months_list = [
+                'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август',
+                'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+            ]
+        else:
+            months_list = [
+                'Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг',
+                'Сен', 'Окт', 'Ноя', 'Дек'
+            ]
+    if language == 'eng':
+        if fullname:
+            months_list = [
+                'January', 'February', 'March', 'April', 'May', 'June', 'July',
+                'August', 'September', 'October', 'November', 'December'
+            ]
+        else:
+            months_list = [
+                'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
+                'Sep', 'Oct', 'Nov', 'Dec'
+            ]
+
+    jan_name = months_list[0]
+
+    for year in years:
+        for month in months_list:
+            if add_year == 'jan':
+                if month == jan_name:
+                    value = month + ', ' + str(year)
+                else:
+                    value = month
+            elif add_year == 'all':
+                value = month + ', ' + str(year)
+            elif add_year == False:
+                value = month
+            result.append(value)
+            
+
+    return result
 
 
 def pl_rstyle(xticks=None, xlim=None, yticks=None, ylim=None):
@@ -2604,24 +2738,33 @@ def pl_dates_translate(dates):
     return dates_translated
 
 
-def pl_tickaliases(years):
+def pl_tickaliases(years, add_year_jan=True, fullname=False):
 
     months_eng = [
         'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
         'Sep', 'Oct', 'Nov', 'Dec'
     ]
-    months_rus = [
-        'Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг',
-        'Сен', 'Окт', 'Ноя', 'Дек'
+    if fullname:
+        months_rus = [
+        'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август',
+        'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
     ]
+    else:
+        months_rus = [
+            'Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг',
+            'Сен', 'Окт', 'Ноя', 'Дек'
+        ]
 
     result = {}
 
     for year in years:
         for e, r in zip(months_eng, months_rus):
             e_w_year = e + '<br>' + str(year)
-            if e == 'Jan':
-                r = r + '<br>' + str(year)
+            if add_year_jan:
+                if e == 'Jan':
+                    r = r + '<br>' + str(year)
+            else:
+                pass
             result[e_w_year] = r
 
     return result
@@ -2666,3 +2809,183 @@ def pl_xticks_months(years, type='ticks', language='rus'):
             result.append(value)
 
     return result
+
+
+def index_add_column_to_datetime(data, column_with_month):
+    
+    '''
+     index   | column  |             index   |
+    ---------------------           ----------
+     2010    | январь  |     -->     2010    | 
+    ---------------------           ----------
+     2011    | февраль |             2011    |
+    ---------------------           ----------
+    '''
+
+    df = data.copy()
+
+    df['index'] = df.index
+    df.index = df[column_with_month] + ' ' +  df['index']
+    df = df.drop('index', axis=1)
+    df = df.drop(column_with_month, axis=1)
+
+    return df
+
+
+def fill_na_based_on_column(data, col1, col2):
+    
+    '''
+    Fillna in col1 by previous date and same value as in col2 
+
+     index   |  col1   |  col2   |            index   |   col1   |  col2  |
+    ------------------------------           -------------------------------
+     2010    |  AAAAA  |  DDDDD  |    -->     2010    |  AAAAA  |  DDDDD  | 
+    ------------------------------           -------------------------------
+     2010    |  BBBBB  |  EEEEE  |            2010    |  BBBBB  |  EEEEE  |
+    ------------------------------           -------------------------------
+     2010    |  CCCCC  |  FFFFF  |     -->    2010    |  CCCCC  |  FFFFF  | 
+    ------------------------------           -------------------------------
+     2011    |   NaN   |  DDDDD  |            2011    |  AAAAA  |  DDDDD  |
+    ------------------------------           -------------------------------
+     2011    |   NaN   |  EEEEE  |     -->    2011    |  BBBBB  |  EEEEE  | 
+    ------------------------------           -------------------------------
+     2011    |   NaN   |  FFFFF  |            2011    |  CCCCC  |  FFFFF  |
+    ------------------------------           -------------------------------
+    '''
+    
+    df = data.copy()
+    df_nan = df[df[col1].isna()].copy()
+    df_nan['index'] = arange(len(df_nan))
+
+    for index in df_nan['index']:
+        val_col2 = df_nan.loc[df_nan['index']==index, col2].item()
+        idx = df_nan.loc[df_nan['index']==index, col2].index.item()
+        idx_year = idx.year
+        idx_month = idx.month - 1
+        idx_day = idx.day
+        new_idx_str = str(idx_year) + '-' + str(idx_month) + '-' + str(idx_day).zfill(2)
+        new_value = df.loc[(df.index==new_idx_str) & (df['Тип']== val_col2), col1].item()
+        df.loc[(df.index==idx) & (df['Тип']== val_col2), col1] = new_value
+
+    return df
+
+
+def add_break_after_index(x, index=0):
+
+    if not isinstance(index, list):
+        index = [index]
+
+    x_split = x.split()
+    
+    if len(x_split) > 1:
+        k = 0
+        
+        for idx in index:
+
+            if idx > x_split.index(x_split[-1]):
+                pass
+
+            else:
+    
+                # because after every circle size of x_split shrink by 1
+                idx = idx - k
+                
+                el_0 = x_split[idx]
+                el_1 = x_split[idx+1]
+                el_new = el_0 + '<br>' + el_1
+                del x_split[idx+1]
+                
+                x_split[idx] = el_new
+                k += 1
+        
+        x_new = ' '.join(x_split)
+
+    else:
+        x_new = x
+
+    return x_new
+
+
+def pl_ticktext_transform_dates_to_rus(data, full_name=False, with_year=True):
+    '''
+    data - datetime
+    '''
+    years = data.year
+    months = data.month
+    day = data.day
+
+    if full_name:
+        months_rus_dict = {
+            1: 'Январь',
+            2: 'Февраль',
+            3: 'Март',
+            4: 'Апрель',
+            5: 'Май',
+            6: 'Июнь',
+            7: 'Июль',
+            8: 'Август',
+            9: 'Сентябрь',
+            10: 'Октябрь',
+            11: 'Ноябрь',
+            12: 'Декабрь'
+        }
+    else:
+        months_rus_dict = {
+            1: 'Янв',
+            2: 'Фев',
+            3: 'Мар',
+            4: 'Апр',
+            5: 'Май',
+            6: 'Июн',
+            7: 'Июл',
+            8: 'Авг',
+            9: 'Сен',
+            10: 'Окт',
+            11: 'Ноя',
+            12: 'Дек'
+        }
+    # months_rus_dict = { v:k for k, v in months_rus_dict.items()} 
+    months_new = [months_rus_dict.get(item, item)  for item in months]
+    dates_new = [i+' '+str(j) for i, j in zip(months_new, day)]
+    if with_year:
+        dates_new = [i+', '+str(j) for i,j in zip(dates_new, years)]
+
+    return dates_new
+
+
+def replace_value_from_dict(x, dictionary):
+    x_new = dictionary.get(x)
+    return x_new
+
+
+def pl_legend(markers, labels, figure, colors=None, sizes=None):
+    
+    markers_dict = {
+        'l': 'lines',
+        'p': 'markers'
+    }
+    sizes_dict = {
+        'lines': 2,
+        'markers': 6
+    }
+    
+    markers = [replace_value_from_dict(i, markers_dict) for i in markers]
+    sizes_ = [replace_value_from_dict(i, sizes_dict) for i in markers]
+    
+    sizes = sizes or sizes_
+    colors = colors or  pio.templates['primetheme'].layout.colorway
+
+    for m, l, c, s in zip(markers, labels, colors, sizes):
+        figure.add_trace(
+            go.Scatter(
+                x=[None],
+                y=[None],
+                showlegend=True,
+                hoverinfo='skip',
+                name=l,
+                mode=m,
+                marker=dict(color=c, size=s)
+            )
+        )
+
+
