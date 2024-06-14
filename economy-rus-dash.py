@@ -884,7 +884,6 @@ def drawFigure(figure, config, width):
 # // --- PAGE CONTENT --- //
 
 separator_icon = html.Div([
-    # html.Div([html.Img(src=r'assets/russian-flag.png', style={'width':'2vw'})], className='separator')])
     html.Div([html.Img(src='assets/favicon.png', style={'width':'1.35vw'})], className='separator')])
 
 inflation_target = html.Div([
