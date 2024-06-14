@@ -304,7 +304,7 @@ cpi_real_time_colors = [alpha_color(palette[2], 1, 'HEX')]*len(cpi_real_time)
 cpi_real_time_colors[cpi_real_time_index_all] = saturate_color(palette[1], 0.75, 'HEX')
 
 prices_food_growth = prices_food_growth*100-100
-prices_food_growth_smoothed = smoothed(prices_food_growth, datetime_index=True)
+# prices_food_growth_smoothed = smoothed(prices_food_growth, datetime_index=True)
 
 cpi_kipc_primary_types = cpi_kipc_primary_perc['Тип'].unique().tolist()
 cpi_kipc_primary_perc_period_previous = \
@@ -379,7 +379,8 @@ fig_cpi_linechart_this_year.add_trace(
     go.Scatter(
         x=cpi_linechart_this_year.index,
         y=cpi_linechart_this_year,
-        mode='lines', line=dict(width=3, color=saturate_color(palette[2], 0.8, 'HEX')),
+        mode='lines',
+        line=dict(shape='spline', width=3, color=saturate_color(palette[2], 0.8, 'HEX')),
         hoverinfo='skip', showlegend=False, name=''
     )
 )
@@ -552,7 +553,7 @@ fig_cpi_real_time_trend.add_trace(
     go.Scatter(
         x=cpi_week_rolling_previous.index,
         y=cpi_week_rolling_previous,
-        line=dict(width=2, color=palette[0]),
+        line=dict(width=2, color=palette[0], shape='spline'),
         name=str(previous_year),
         hovertemplate='%{y}%'
     ), row=1, col=1
@@ -561,7 +562,7 @@ fig_cpi_real_time_trend.add_trace(
     go.Scatter(
         x=cpi_week_rolling_previous.index,
         y=cpi_week_rolling_current,
-        line=dict(width=2, color=palette[2]),
+        line=dict(width=2, color=palette[2], shape='spline'),
         name=str(current_year),
         hovertemplate='%{y}%'
     ), row=1, col=1
@@ -1217,14 +1218,20 @@ page_prices = html.Div([
                     html.H5('Структура цены', style={
                         'font-size':'0.9em',
                         'text-align':'left',
-                        'margin-left':'3.5vw'
+                        'margin':'0 0 0 3.5vw'
                     }),
                     # prices structures
                     html.Div([
                         dcc.Graph(
                             id='prices-structure', className='graph-figure',
                             figure=fig_price_structure, config=config_wo_modebar)
-                        ], style={'width':'100%', 'height':'28vh', 'float':'left', 'padding-left':'2vw', 'padding-right':'2vw'}),
+                        ], style={
+                        'width':'100%',
+                        'height':'28vh',
+                        'float':'left',
+                        'padding-left':'2vw',
+                        'padding-right':'2vw'
+                    }),
                     ], style={'width':'65vw', 'height':'30vh', 'display':'inline-block'}),
             ], className='content-container', style={'width':'80vw', 'height':'72vh', 'display':'inline-block'}),
             
@@ -1270,7 +1277,6 @@ def rus_economy_function(pathname):
     Input('prices-radioitems-input', 'value'),
     Input('figure-prices-food-growth', 'figure'),
     Input('prices-structure', 'figure'),
-    
 )
 def update_prices_gowth_plot(value, figure1, figure2):
     '''
@@ -1282,21 +1288,23 @@ def update_prices_gowth_plot(value, figure1, figure2):
 
     # else:
     # PRICES GROWTH
-    prices_food_growth_3 = prices_food_growth_smoothed[prices_food_growth_products_dict[value]].copy()
-    prices_food_growth_4 = prices_food_growth[prices_food_growth_products_dict[value]].copy()
+    # prices_food_growth = prices_food_growth_smoothed[prices_food_growth_products_dict[value]].copy()
+    df = prices_food_growth[prices_food_growth_products_dict[value]].copy()
+    df_len = len(df)
+    # prices_food_growth = prices_food_growth[prices_food_growth_products_dict[value]].copy()
     
-    if isinstance(prices_food_growth_3, pd.Series):
-        prices_food_growth_3 = prices_food_growth_3.to_frame()
-    if isinstance(prices_food_growth_4, pd.Series):
-        prices_food_growth_4 = prices_food_growth_4.to_frame()
+    # if isinstance(prices_food_growth_3, pd.Series):
+    #     prices_food_growth_3 = prices_food_growth_3.to_frame()
+    if isinstance(df, pd.Series):
+        df = df.to_frame()
     
     fig_prices_food_growth = go.Figure()
 
     # dates
     fig_prices_food_growth.add_trace(
         go.Scatter(
-            x=prices_food_growth_4.index,
-            y=[0]*len(prices_food_growth_4),
+            x=df.index,
+            y=[0]*df_len,
             showlegend=False,
             mode='markers',
             marker_color=palette[0],
@@ -1309,38 +1317,24 @@ def update_prices_gowth_plot(value, figure1, figure2):
                 '<extra></extra>'
         )
     )
-
-    for col in prices_food_growth_3.columns:
-
+    # charts
+    for col in df.columns:
         fig_prices_food_growth.add_trace(
         go.Scatter(
-            x=prices_food_growth_3.index,
-            y=prices_food_growth_3[col].values.ravel(),
-            mode='lines',
+            x=df.index,
+            y=df[col],
+            line_shape='spline',
             line_width=prices_food_growth_properties_dict[value][2],
             line_color=prices_food_growth_plots_dict[col][1],
             line_dash=prices_food_growth_plots_dict[col][2],
-            hoverinfo='skip',
-            name=prices_food_growth_plots_dict[col][0]
-        )
-    )
-    
-        fig_prices_food_growth.add_trace(
-            go.Scatter(
-                x=prices_food_growth_4.index,
-                y=prices_food_growth_4[col].values.ravel(),
-                mode='markers',
-                marker_size=7,
-                opacity=0,
-                line_color=prices_food_growth_plots_dict[col][1], showlegend=False,
-                name=prices_food_growth_plots_dict[col][0],
-                text=[prices_food_growth_plots_dict[col][0]]*len(prices_food_growth_4),
-                hovertemplate=
+            name=prices_food_growth_plots_dict[col][0],
+            text=[prices_food_growth_plots_dict[col][0]]*len(df.index),
+            hovertemplate=
                     '%{text}: <b>%{y}</b>'
                     '<extra></extra>'
-                )
-            )
-        
+        )
+    )
+    # zero-line
     fig_prices_food_growth.add_hline(
             y=1, line_dash='3px', opacity=0.4,
             line=dict(width=1, color='black'))
@@ -1372,7 +1366,7 @@ def update_prices_gowth_plot(value, figure1, figure2):
         )
     )
 
-    # PRICES STRUCTURE
+    # # PRICES STRUCTURE
     if value == 'Овощи':
         fig_price_structure = go.Figure()
         fig_price_structure.update_layout(
