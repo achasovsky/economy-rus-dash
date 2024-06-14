@@ -57,7 +57,7 @@ body {
   background: #FFFFFF;
 }
 html H2 {
-    color:#353535;
+    color:#454545;
     font-size: 1.75em;
     font-weight: 500;
     text-align:center;
@@ -65,7 +65,7 @@ html H2 {
     margin: 1.5vh 0 1.5vh 0;
 }
 html H3 {
-    color:#353535;
+    color:#454545;
     font-size: 1.5em;
     font-weight: 400;
     text-align:center;
@@ -74,7 +74,7 @@ html H3 {
     /* border: 1px solid green; */
 }
 html H4 {
-    color:#353535;
+    color:#454545;
     font-size: 1.25em;
     font-weight: 400;
     text-align:center;
@@ -83,20 +83,20 @@ html H4 {
     /* border: 1px solid red; */
 }
 html H5 {
-    color:#353535;
+    color:#454545;
     font-size: 1em;
     font-weight: 400;
     text-align:center;
     padding: 0;
-    margin: 0;
+    margin: 1.5vh 0 1.5vh 0;
 }
 html H6 {
     color:#353535;
-    font-size: 0.75em;
-    font-weight: 300;
+    font-size: 0.78em;
+    font-weight: 400;
     text-align:center;
     padding: 0;
-    margin: 1.5vh 0 1.5vh 0;
+    margin: 0;
 }
 html p {
     margin: 0;
@@ -474,14 +474,7 @@ html hr {
     padding-left: 5%;
     margin-bottom: -1vh;
 }
-.kpi-title {
-    width:100%;
-    margin: 0vh 0vh 0 0;
-    font-weight:400;
-    text-align:left;
-    padding: 0.5vh 0 0 1vw;
-    font-size: 0.8em;
-}
+
 .forecasts-container {
     display: flex;
     align-items: center;

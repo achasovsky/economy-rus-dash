@@ -552,7 +552,7 @@ fig_cpi_real_time_trend.add_trace(
     go.Scatter(
         x=cpi_week_rolling_previous.index,
         y=cpi_week_rolling_previous,
-        line=dict(width=2.5, color=palette[0]),
+        line=dict(width=2, color=palette[0]),
         name=str(previous_year),
         hovertemplate='%{y}%'
     ), row=1, col=1
@@ -561,7 +561,7 @@ fig_cpi_real_time_trend.add_trace(
     go.Scatter(
         x=cpi_week_rolling_previous.index,
         y=cpi_week_rolling_current,
-        line=dict(width=2.5, color=palette[2]),
+        line=dict(width=2, color=palette[2]),
         name=str(current_year),
         hovertemplate='%{y}%'
     ), row=1, col=1
@@ -1042,14 +1042,14 @@ page_inflation = html.Div([
         html.Div([
             # left title
             html.Div(
-                html.H3('Ключевые показатели'),
+                html.H4('Ключевые показатели'),
                 style={
                     'float':'left',
                     'width':'44vw',
                 }),
             # right title
             html.Div(
-                    html.H3('Недельные данные по основным категориям товаров'),
+                    html.H4('Недельные данные'),
                     style={
                         'float':'left',
                         'width':'52vw',
@@ -1079,7 +1079,7 @@ page_inflation = html.Div([
                     'padding':'0 5vw 0 5vw',
                 }),
                 html.Div(className='hr-grey', style={'width':'94%', 'margin':'auto'}),
-                html.Div('Прогнозы на год', className='kpi-title'),
+                html.H6('Прогнозы на год', style={'padding':'0.5vh 0 0 1vw', 'text-align':'left'}),
                 html.Div(
                     inflation_forecasts,
                     style={
@@ -1090,7 +1090,7 @@ page_inflation = html.Div([
                     }),
                 html.Div(className='hr-grey', style={'width':'94%', 'margin':'auto'}),
                 # line-chart title
-                html.Div('Динамика с 2021 года', className='kpi-title'),
+                html.H6('Динамика с 2021 года', style={'padding':'0.5vh 0 0 1vw', 'text-align':'left'}),
                 # bottom little line-chart
                 html.Div([
                     dcc.Graph(
@@ -1103,18 +1103,27 @@ page_inflation = html.Div([
             ], className='content-container', style={'width':'44vw', 'height':'55vh'}),
             # right big dash
             html.Div([
-                dcc.Graph(
+                html.H6(['Основные категории товаров'], style={
+                    # 'display':'flex',
+                    # 'align-items': 'center',
+                    'height':'5%',
+                    'padding':'1vh 0 0 1vw',
+                    'text-align':'left'
+                }),
+                html.Div([
+                    dcc.Graph(
                     className='graph-figure',
                     figure=fig_cpi_real_time_groups, config=config)
-            ], className='content-container', style={'width':'53vw', 'height':'55vh', 'margin-left':'1vw'})
+                ], style={
+                    'height':'95%'
+                })
+            ], className='content-container', style={'width':'53vw', 'height':'55vh', 'margin-left':'1vw', 'display':'inline-block',})
         ], style={'width':'100%'}),
         # second row
         html.Div([
             # bottom line-chart title
-            # html.Div([
-                html.H3(f'Инфляция в {current_month_rus_sklon_year}', style={'width':'58vw', 'float':'left'}),
-                html.H3('Средняя 5-недельная инфляция', style={'width':'39vw', 'margin-left':'1vw', 'float':'left'}),
-            # ], style={'border':'1px solid green', 'width':'100%'}),
+            html.H4(f'Инфляция в {current_month_rus_sklon_year}', style={'width':'58vw', 'float':'left'}),
+            html.H4('5-недельная инфляция', style={'width':'39vw', 'margin-left':'1vw', 'float':'left'}),
             # bottom big line-chart 
             html.Div([
                 dcc.Graph(
@@ -1168,11 +1177,11 @@ page_prices = html.Div([
         # food prices
         html.Div([
             # title
-            html.Div(html.H3('Цены на продукты питания'),
+            html.Div(html.H4('Цены на продукты питания'),
             style={'float':'left', 'width':'75vw', 'margin':'0 0 0 1vw'}),
             # sub-title
             html.Div(
-                html.H4('Процентное изменение цен по сравнению с Январем 2021',
+                html.H5('Процентное изменение цен по сравнению с Январем 2021',
                 style={'text-align':'left', 'margin-top':'0vh'}),
                 style={'float':'left', 'width':'70vw', 'margin':'0 0 0 1vw'}),
             # chart, radioitems, prices structure
