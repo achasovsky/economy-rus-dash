@@ -301,7 +301,7 @@ xticks_real_time_max = cpi_real_time['Текущий'].mean().round(2)
 
 cpi_real_time_index_all = cpi_real_time['Текущий'].index.tolist().index('Среднее значение')
 cpi_real_time_colors = [alpha_color(palette[2], 1, 'HEX')]*len(cpi_real_time)
-cpi_real_time_colors[cpi_real_time_index_all] = saturate_color(palette[1], 0.75, 'HEX')
+cpi_real_time_colors[cpi_real_time_index_all] = saturate_color(palette[1], 1, 'HEX')
 
 prices_food_growth = prices_food_growth*100-100
 # prices_food_growth_smoothed = smoothed(prices_food_growth, datetime_index=True)
@@ -1331,8 +1331,22 @@ def update_prices_gowth_plot(value, figure1, figure2):
     )
     # zero-line
     fig_prices_food_growth.add_hline(
-            y=1, line_dash='3px', opacity=0.4,
-            line=dict(width=1, color='black'))
+        y=0,
+        opacity=1,
+        line_color='#000000',
+        line_width=0.45,
+        line_dash='2px'
+                
+    )
+    # fig_prices_food_growth.add_trace(
+    #     go.Scatter(
+    #         x=[df.index[0], df.index[-1]],
+    #         y=[0]*df_len,
+    #         line_color='#707070',
+    #         hoverinfo='skip',
+    #         showlegend=False,
+    #     )
+    # )
 
     fig_prices_food_growth.update_layout(
         margin=dict(b=55, r=10, l=60),
@@ -1347,7 +1361,8 @@ def update_prices_gowth_plot(value, figure1, figure2):
         yaxis=dict(
             dtick=prices_food_growth_properties_dict[value][0],
             ticksuffix=' %',
-            showticksuffix = 'all'
+            showticksuffix = 'all',
+            showgrid=True
         ),
         legend=dict(
             entrywidth=prices_food_growth_properties_dict[value][1],
