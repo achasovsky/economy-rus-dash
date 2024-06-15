@@ -1454,6 +1454,7 @@ app = Dash(
     title='Экономика России',
     # external_stylesheets=[dbc.themes.BOOTSTRAP],
     # external_stylesheets=['assets/bWLwgP.css'],
+    external_stylesheets=['assets/custom.css'],
     suppress_callback_exceptions=True
 )
 server = app.server
