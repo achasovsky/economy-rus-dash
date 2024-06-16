@@ -16,9 +16,9 @@ from functions import *
 # font_family = 'NeverMindCompact'
 # font_family = 'RG-StandardBook'
 # font_family = 'TaylorSans'
-# font_family =  'Tahoma'
-# font_family =  'Trebuchet MS'
-# font_family =  'Verdana'
+# font_family = 'Tahoma'
+# font_family = 'Trebuchet MS'
+# font_family = 'Verdana'
 # font_family = 'Geologica Cursive'
 # font_family = 'PitagonSansMono'
 # font_family = 'Roberto Sans'
@@ -26,8 +26,10 @@ from functions import *
 # font_family = 'Winston'
 # font_family = 'Mulish'
 # font_family = 'Ubuntu'
-font_family = 'Geologica Roman'
-
+font_family_page = 'Geologica Roman'
+font_family_chart = 'Geologica Roman Chart'
+font_family_chart_hoverlabel = 'Geologica Roman Chart Hoverlabel'
+# font_family_page = 'Arial'
 
 # font_family = 'system-ui'
 
@@ -41,7 +43,7 @@ pio.templates['primetheme'] = go.layout.Template(
             t=20, r=35, l=50, b=35
         ),
         'font': {
-            'family': font_family,
+            'family': font_family_chart,
             # 'family': 'Ubuntu',
             'size': 11.5,
         },
@@ -167,7 +169,8 @@ pio.templates['primetheme'] = go.layout.Template(
             # bgcolor='#FFFFFF',
             bordercolor='#A5A5A5',
             font=dict(
-                family=font_family,
+                size=13,
+                family=font_family_chart_hoverlabel,
                 weight='normal',
                 color='#404040',
             )),
@@ -674,7 +677,7 @@ fig_cpi_kipc.add_trace(
         hovertemplate=(
             '<b>%{text}</b>'
             + '<br>%{customdata[0]}'
-            + '<br>Изменение цены: %{y}%'),
+            + '<br>Изменение цены: <b>%{y}%</b>'),
         text=xticktext_kipc,
         hoverinfo='name+z',
     )
@@ -1251,9 +1254,7 @@ def rus_economy_function(pathname):
 @callback(
     Output('figure-prices-food-growth', 'figure'),
     Output('prices-structure', 'figure'),
-    Input('prices-radioitems-input', 'value'),
-    Input('figure-prices-food-growth', 'figure'),
-    Input('prices-structure', 'figure'),
+    Input('prices-radioitems-input', 'value')
 )
 def update_prices_gowth_plot(value):
     """
@@ -1407,7 +1408,7 @@ def update_prices_gowth_plot(value):
             markers=['p']*len(price_structure),
             labels=price_structure.index,
             colors=palette,
-            figure=fig_price_structure)
+            figure=fig_structure)
         
         fig_structure.update_layout(
             margin=dict(t=0, b=25, r=0),
@@ -1446,7 +1447,7 @@ server = app.server
 
 app.layout = html.Div(
     [dcc.Location(id="url"), content],
-    style={'font-family': [font_family, 'system-ui', 'Open Sans']}
+    style={'font-family': [font_family_page, 'system-ui', 'Open Sans']}
 )
 
 if __name__ == '__main__':
