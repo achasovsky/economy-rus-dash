@@ -1,5 +1,6 @@
 # // --- Import libraries --- //
 
+
 import dash_bootstrap_components as dbc
 import plotly.io as pio
 from dash import Dash, html, dcc, callback, Output, Input
@@ -18,7 +19,6 @@ from functions import *
 # font_family =  'Tahoma'
 # font_family =  'Trebuchet MS'
 # font_family =  'Verdana'
-font_family = 'Geologica Roman'
 # font_family = 'Geologica Cursive'
 # font_family = 'PitagonSansMono'
 # font_family = 'Roberto Sans'
@@ -26,6 +26,7 @@ font_family = 'Geologica Roman'
 # font_family = 'Winston'
 # font_family = 'Mulish'
 # font_family = 'Ubuntu'
+font_family = 'Geologica Roman'
 
 
 # font_family = 'system-ui'
