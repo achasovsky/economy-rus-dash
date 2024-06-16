@@ -48,7 +48,23 @@ from functions import *
 
 # // --- PLOTLY CONFIGURATION --- //
 
-font_family =  'Geologica Roman'
+
+# font_family = 'PTSans'
+# font_family = 'Avenir'
+# font_family = 'NeverMindCompact'
+# font_family = 'RG-StandardBook'
+# font_family = 'TaylorSans'
+# font_family =  'Tahoma'
+# font_family =  'Trebuchet MS'
+# font_family =  'Verdana'
+font_family = 'Geologica Roman'
+# font_family = 'PitagonSansMono'
+# font_family = 'Roberto Sans'
+# font_family = 'Vela Sans'
+# font_family = 'Winston'
+
+
+
 # font_family = 'system-ui'
 
 pio.templates['primetheme'] = go.layout.Template(
@@ -187,6 +203,8 @@ pio.templates['primetheme'] = go.layout.Template(
             # bgcolor='#FFFFFF',
             bordercolor='#A5A5A5',
             font=dict(
+                family=font_family,
+                weight='normal',
                 color='#404040',
             )),
         'modebar': dict(
@@ -887,14 +905,14 @@ separator_icon = html.Div([
     html.Div([html.Img(src='assets/favicon.png', style={'width':'1.35vw'})], className='separator')])
 
 inflation_target = html.Div([
-    html.P('Цель ЦБ по инфляции', className='inflation-kpi-dash-header'),
+    html.H5('Цель ЦБ по инфляции', className='inflation-kpi-dash-title'),
     html.P(
         html.P(f'{cpi_target_value} %'), className='inflation-kpi-dash-content',
         style={'color': f'{cpi_target_color}'})
 ], className='inflation-kpi-dash-container')
 
 inflation_real = html.Div([
-    html.P(f'Инфляция в {cpi_month_value}', className='inflation-kpi-dash-header'),
+    html.H5(f'Инфляция в {cpi_month_value}', className='inflation-kpi-dash-title'),
     html.P(
         html.P(f'{cpi_real_value} %'), className='inflation-kpi-dash-content',
         style={'color': f'{cpi_real_color}'})
@@ -903,72 +921,69 @@ inflation_real = html.Div([
 inflation_forecasts = html.Div([
     html.Div([
         html.Div([
-            html.P('Центральный банк', style={'font-weight':'400'}),
-            html.P('4.3% - 4.8%', style={
+            html.H5('Центральный банк', className='forecasts-title'),
+            html.P('4.3% - 4.8%', className='forecasts-content', style={
                 # 'color':saturate_color(palette[3], 1, 'HEX'),
                 'color': '#808080',
                 'font-weight':'500'
             })
-        ], className='forecasts', style={'width':'33%'}),
+        ], className='forecasts-container'),
         html.Div([
-            html.P('Минфин', style={'font-weight':'400'}),
-            html.P('5.1%', style={
+            html.H5('Минфин', className='forecasts-title'),
+            html.P('5.1%', className='forecasts-content', style={
                 'color':saturate_color(palette[-10], 1, 'HEX'),
                 # 'color': '#6063A3'
-                'font-weight':'600'
             })
-        ], className='forecasts', style={'width':'18%'}),
+        ], className='forecasts-container', style={'width':'18%'}),
         html.Div([
-            html.P('Минэк', style={'font-weight':'400'}),
-            html.P('5.1%', style={
+            html.H5('Минэк', className='forecasts-title'),
+            html.P('5.1%', className='forecasts-content', style={
                 'color':saturate_color(palette[-8], 1, 'HEX'),
-                'font-weight':'600'
             })
-        ], className='forecasts', style={'width':'16%', 'margin-left':'1vw'}),
+        ], className='forecasts-container', style={'width':'16%', 'margin-left':'1vw'}),
         html.Div([
-            html.P('Всемирный банк', style={'font-weight':'400'}),
-            html.P('6.9%', style={
+            html.H5('Всемирный банк', className='forecasts-title'),
+            html.P('6.9%', className='forecasts-content', style={
                 # 'color':saturate_color(palette[7], 1, 'HEX'),
                 'color':saturate_color(palette[3], 1, 'HEX'),
                 # 'color': '#5B67BD'
-                'font-weight':'600',
             })
-        ], className='forecasts', style={'width':'33%'}),
-    ], className='forecasts-container') 
+        ], className='forecasts-container'),
+    ], className='forecasts-main-container') 
 ], style={'height':'100%'})
 
 header_big = html.Div([
-    html.Div([], className='hr-grey', style={'margin':'1vh 0 1vh 0'}),
+    html.Div([], className='hr-header-big-top'),
     html.Div([
         html.Div([html.A(['Главная'], href='/', className='main')], className='header-big-button-active'),
         html.Div([html.A(['Инфляция и цены'], href='/inflation-and-prices', className='inflation-hover')], className='header-big-button'),
         html.Div([html.A(['Бюджет'], href='/budget', className='budget-hover')], className='header-big-button'),
         # html.Div([html.A(['Промышленность'], href='/page-1'),], className='header-big-button')
     ], className='header-big-container'),
-    html.Div([], className='hr-grey', style={'margin':'1vh 0 1vh 0'}),
+    html.Div([], className='hr-header-big-bottom'),
     html.Div([separator_icon], style={'margin-bottom':'1vh'})
 ])
 header_big_inflation = html.Div([
-    html.Div([], className='hr-grey', style={'margin':'1vh 0 1vh 0'}),
+    html.Div([], className='hr-header-big-top'),
     html.Div([
         html.Div([html.A(['Главная'], href='/')], className='header-big-button'),
         html.Div([html.A(['Инфляция и цены'], href='/inflation-and-prices', className='inflation')], className='header-big-button-active'),
         html.Div([html.A(['Бюджет'], href='/budget', className='budget-hover')], className='header-big-button'),
         # html.Div([html.A(['Промышленность'], href='/page-1'),], className='header-big-button')
     ], className='header-big-container'),
-    html.Div([], className='hr-grey', style={'margin':'1vh 0 1vh 0'}),
+    html.Div([], className='hr-header-big-bottom'),
     # separator_icon
     html.Div([separator_icon], style={'margin-bottom':'1vh'})
 ])
 header_big_budget = html.Div([
-    html.Div([], className='hr-grey', style={'margin':'1vh 0 1vh 0'}),
+    html.Div([], className='hr-header-big-top'),
     html.Div([
         html.Div([html.A(['Главная'], href='/')], className='header-big-button'),
         html.Div([html.A(['Инфляция и цены'], href='/inflation-and-prices', className='inflation-hover')], className='header-big-button'),
         html.Div([html.A(['Бюджет'], href='/budget', className='budget')], className='header-big-button-active'),
         # html.Div([html.A(['Промышленность'], href='/page-1'),], className='header-big-button')
     ], className='header-big-container'),
-    html.Div([], className='hr-grey', style={'margin':'1vh 0 1vh 0'}),
+    html.Div([], className='hr-header-big-bottom'),
     # separator_icon
     html.Div([separator_icon], style={'margin-bottom':'1vh'})
 ])
@@ -982,7 +997,7 @@ header_small_inflation = html.Div([
                 html.A('Цены', href='/prices'), className='header-small-button'),
         #     html.Div(
         #         html.A('Инфляция в 1990-х', href='/inflation-90'), className='header-small-button', style={'width':'12vw'}),
-        ], style={'margin-left':'1vw', 'display':'flex', 'align-items': 'center'})
+        ], style={'width':'99vw', 'margin-left':'1vw', 'display':'flex', 'align-items': 'center'})
     ], className='header-small-container')
 ])
 header_small_prices = html.Div([
@@ -1014,16 +1029,17 @@ content_under_development = html.Div([
     html.Div(
         [html.Img(src='assets/under-construction.png', style={'width':'5vw'})],
         style={'margin-top':'1vh', 'display':'flex', 'justify-content':'center'}),
-    html.Div(['Страница в разработке'], style={'font-size':'1em', 'text-align': 'center', 'margin-top':'1vh'}),
-    # html.Div(['404'], style={'font-size':'5em', 'font-weight':'500', 'text-align': 'center'})
-], className='main-container', style={'display': 'flex', 'display':'flex;', 'justify-content':'center'})
+    html.Div(['Страница в разработке'], style={'margin-top':'1vh', 'font-size':'1em', 'text-align': 'center'}),
+], style={'display': 'inline'})
 
 page_start = html.Div([
     # header
     header_big,
-    # content
-    content_under_development
-], style={'display':'inline-block'})
+    html.Div([
+        # content
+        content_under_development
+    ], className='page-container')
+])
 
 page_inflation = html.Div([
     # header
@@ -1071,7 +1087,7 @@ page_inflation = html.Div([
                     'align-items':'center',
                     'padding':'0 5vw 0 5vw',
                 }),
-                html.Div(className='hr-grey', style={'width':'94%', 'margin':'auto'}),
+                html.Div(className='hr-grey', style={'width':'96%', 'margin':'auto'}),
                 html.H6(['Прогнозы на год'], style={
                     'height':'7%',
                     'padding':'0 0 0 1vw',
@@ -1084,7 +1100,7 @@ page_inflation = html.Div([
                         'width':'100%',
                         'height':'16%',
                     }),
-                html.Div(className='hr-grey', style={'width':'94%', 'margin':'auto'}),
+                html.Div(className='hr-grey', style={'width':'96%', 'margin':'auto'}),
                 # line-chart title
                 html.H6(['Динамика с 2021 года'], style={
                     'height':'7%',
@@ -1097,8 +1113,9 @@ page_inflation = html.Div([
                         className='graph-figure',
                         figure=fig_cpi_linechart_this_year, config=config)
                 ], style={
-                    'float':'top',
+                    # 'float':'top',
                     'height':'49%',
+                    # 'display': 'inline-block'
                 }),
             ], className='content-container', style={'width':'44vw', 'height':'55vh'}),
             # right big dash
@@ -1137,7 +1154,7 @@ page_inflation = html.Div([
         ], style={
             # 'float':'left',
             'width':'100%'})
-    ], className='main-container')
+    ], className='page-container')
 ])
 
 def prices_radioitems_generate_items(values):
@@ -1159,6 +1176,7 @@ prices_radioitems = html.Div([
         options=prices_radioitems_generate_items(prices_food_growth_products_dict.keys()),
         value='Хлеб',
         id='prices-radioitems-input',
+        className='prices-radioitems-input'
     )
     ]
 )
@@ -1229,12 +1247,8 @@ page_prices = html.Div([
                     }),
                     ], style={'width':'63vw', 'height':'30vh', 'display':'inline-block'}),
             ], className='content-container', style={'width':'85vw', 'height':'72vh', 'display':'inline-block'}),
-            
-        ]),
-        
-    ], className='main-container')
-
-
+        ]),  
+    ], className='page-container')
 ])
 
 # page_inflation_90 = html.Div([
@@ -1247,8 +1261,7 @@ page_budget = html.Div([
     header_big_budget,
     content_under_development
 ])
-    
-content = html.Div(id='page-content', style={'font-weight':'200'})
+
 
 
 @callback(
@@ -1448,6 +1461,7 @@ def update_prices_gowth_plot(value, figure1, figure2):
 
     return fig_prices_food_growth, fig_price_structure
 
+content = html.Div(id='page-content', style={'font-weight':'200'})
 
 app = Dash(
     name='rus',
