@@ -35,6 +35,10 @@ font_family_chart_hoverlabel = 'Geologica Roman Chart Hoverlabel'
 
 pio.templates['primetheme'] = go.layout.Template(
     layout={
+        # 'paper_bgcolor': 'rgba(1,1,1,0)', # прозрачный фон
+        # 'plot_bgcolor': 'rgba(1,1,1,0)', # прозрачный фон
+        'paper_bgcolor': '#FFFFFF',  # FAFFFB
+        'plot_bgcolor': '#FFFFFF',
         # 'dragmode': 'zoom',
         # 'hoverdistance': 0,
         'hidesources': True,
@@ -90,7 +94,9 @@ pio.templates['primetheme'] = go.layout.Template(
             tickcolor='rgba(1,1,1,0)',
             # tickcolor='#E1E1E1',
             # tickfont=dict(color='#757575', size=11),
-            tickfont=dict(color='#505050', size=11),
+            tickfont=dict(
+                size=11,
+                color='#9C9C9C'),
             showgrid=False,
             showline=True,
             showspikes=False,
@@ -122,7 +128,10 @@ pio.templates['primetheme'] = go.layout.Template(
             tickcolor='rgba(1,1,1,0)',
             # tickcolor='#E1E1E1',
             # tickfont=dict(color='#757575', size=11),
-            tickfont=dict(color='#505050', size=11),
+            tickfont=dict(
+                size=11,
+                color='#9C9C9C',
+                ),
             position=0,
             showgrid=False,
             showline=True,
@@ -140,14 +149,14 @@ pio.templates['primetheme'] = go.layout.Template(
             title={
                 'font': dict(
                     color='#404040',
-                    size=14,
+                    size=13,
                     style='normal',
                     weight='bold')
             },
             font=dict(
-                color='#505050',
                 size=12,
-                style='normal',
+                family=font_family_chart_hoverlabel,
+                color='#404040',
                 weight='normal'
             ),
             orientation='h',
@@ -171,8 +180,8 @@ pio.templates['primetheme'] = go.layout.Template(
             font=dict(
                 size=13,
                 family=font_family_chart_hoverlabel,
-                weight='normal',
                 color='#404040',
+                weight='normal',
             )),
         'modebar': dict(
             orientation='v',
@@ -180,10 +189,6 @@ pio.templates['primetheme'] = go.layout.Template(
             color='rgba(1,1,1,0.5)',
             activecolor='rgba(1,1,1,0.7)',
         ),
-        # 'paper_bgcolor': 'rgba(1,1,1,0)', # прозрачный фон
-        # 'plot_bgcolor': 'rgba(1,1,1,0)', # прозрачный фон
-        'paper_bgcolor': '#FFFFFF',  # FAFFFB
-        'plot_bgcolor': '#FFFFFF',  
     },
     data={
         # Each graph object must be in a tuple or list for each trace
@@ -284,7 +289,7 @@ cpi_real_time = cpi_real_time.sort_values('Текущий')
 xticks_real_time_min = cpi_real_time['Текущий'].iloc[0]
 xticks_real_time_max = cpi_real_time['Текущий'].mean().round(2)
 
-cpi_real_time_index_all = cpi_real_time['Текущий'].index.tolist().index('Среднее значение')
+cpi_real_time_index_all = cpi_real_time['Текущий'].index.tolist().index('Все категории')
 cpi_real_time_colors = [alpha_color(palette[2], 1, 'HEX')]*len(cpi_real_time)
 cpi_real_time_colors[cpi_real_time_index_all] = saturate_color(palette[1], 1, 'HEX')
 
@@ -324,7 +329,7 @@ window_stop_index_for_rolling = \
 cpi_real_time_groups_mean_rolling = \
     cpi_real_time_groups_mean.loc[
         cpi_real_time_groups_mean.index > window_stop_index_for_rolling,
-        'Среднее значение'].rolling(5).mean()
+        'Все категории'].rolling(5).mean()
 
 cpi_week_rolling_previous = cpi_real_time_groups_mean_rolling.loc[str(previous_year)].round(2)
 cpi_week_rolling_current = cpi_real_time_groups_mean_rolling.loc[str(current_year)].round(2)
@@ -508,7 +513,11 @@ fig_cpi_real_time_groups.update_layout(
         tickcolor='#808080',
         ticklen=6,
         tickwidth=1,
-        tickvals=[xticks_real_time_min, xticks_real_time_max]
+        tickvals=[xticks_real_time_min, xticks_real_time_max],
+        tickfont=dict(
+            color='#404040',
+            size=10
+        )
     ),
     yaxis=dict(
         showline=True,
@@ -516,11 +525,17 @@ fig_cpi_real_time_groups.update_layout(
         tickvals=xticks_real_time,
         ticktext=xticktext_real_time,
         ticklen=10,
+        tickfont=dict(
+            color='#505050'
+        )
     ),
     barmode='relative',
     hovermode='closest',
     hoverlabel_align='left',
     legend=dict(
+        font=dict(
+            size=12
+        ),
         x=0,
         y=-0.15,
         entrywidth=155,
@@ -698,6 +713,9 @@ fig_cpi_kipc.update_layout(
         showline=False,
         showspikes=False,
         showgrid=False,
+        tickfont=dict(
+            color='#505050'
+        )
     ),
     yaxis=dict(
         showline=False,
@@ -876,7 +894,7 @@ fig_price_structure = go.Figure()
 # // --- PAGE CONTENT --- //
 
 separator_icon = html.Div([
-    html.Div([html.Img(src='assets/favicon.png', style={'width': '1.35vw'})], className='separator')])
+    html.Div([html.Img(src='assets/favicon.png', style={'width': '1.35em'})], className='separator')])
 
 inflation_target = html.Div([
     html.H5('Цель ЦБ по инфляции', className='inflation-kpi-dash-title'),
@@ -899,7 +917,7 @@ inflation_forecasts = html.Div([
             html.P('4.3% - 4.8%', className='forecasts-content', style={
                 # 'color':saturate_color(palette[3], 1, 'HEX'),
                 'color': '#808080',
-                'font-weight': '500'
+                'font-weight': '600'
             })
         ], className='forecasts-container'),
         html.Div([
@@ -938,12 +956,12 @@ header_big = html.Div([
         # html.Div([html.A(['Промышленность'], href='/page-1'),], className='header-big-button')
     ], className='header-big-container'),
     html.Div([], className='hr-header-big-bottom'),
-    html.Div([separator_icon], style={'margin-bottom': '1vh'})
-])
+    html.Div([separator_icon])
+], className='header')
 header_big_inflation = html.Div([
     html.Div([], className='hr-header-big-top'),
     html.Div([
-        html.Div([html.A(['Главная'], href='/')],
+        html.Div([html.A(['Главная'], href='/', className='main-hover')],
                  className='header-big-button'),
         html.Div([html.A(['Инфляция и цены'], href='/inflation-and-prices', className='inflation')],
                  className='header-big-button-active'),
@@ -953,12 +971,12 @@ header_big_inflation = html.Div([
     ], className='header-big-container'),
     html.Div([], className='hr-header-big-bottom'),
     # separator_icon
-    html.Div([separator_icon], style={'margin-bottom': '1vh'})
-])
+    html.Div([separator_icon])
+], className='header')
 header_big_budget = html.Div([
     html.Div([], className='hr-header-big-top'),
     html.Div([
-        html.Div([html.A(['Главная'], href='/')],
+        html.Div([html.A(['Главная'], href='/', className='main-hover')],
                  className='header-big-button'),
         html.Div([html.A(['Инфляция и цены'], href='/inflation-and-prices', className='inflation-hover')],
                  className='header-big-button'),
@@ -968,10 +986,11 @@ header_big_budget = html.Div([
     ], className='header-big-container'),
     html.Div([], className='hr-header-big-bottom'),
     # separator_icon
-    html.Div([separator_icon], style={'margin-bottom': '1vh'})
-])
+    html.Div([separator_icon])
+], className='header')
 
 header_small_inflation = html.Div([
+    html.Div([], className='hr-header-small'),
     html.Div([
         html.Div([
             html.Div(
@@ -980,8 +999,9 @@ header_small_inflation = html.Div([
                 html.A('Цены', href='/prices'), className='header-small-button'),
         ], style={'width': '99vw', 'margin-left': '1vw', 'display': 'flex', 'align-items': 'center'})
     ], className='header-small-container')
-])
+], className='header')
 header_small_prices = html.Div([
+    html.Div([], className='hr-header-small'),
     html.Div([
         html.Div([
             html.Div(
@@ -1015,8 +1035,8 @@ page_start = html.Div([
     html.Div([
         # content
         content_under_development
-    ], className='page-container')
-])
+    ], className='page-container', style={'background-color':'#FFFFFF'})
+], style={'background-color':'#FFFFFF'})
 
 page_inflation = html.Div([
     # header
@@ -1110,7 +1130,7 @@ page_inflation = html.Div([
                 ], style={
                     'height': '52vh',
                 })
-            ], className='content-container', style={'width': '53vw', 'height': '55vh', 'margin-left': '1vw'})
+            ], className='content-container', style={'width': '52vw', 'height': '55vh', 'margin-left': '1vw'})
         ], style={'width': '100%'}),
         # second row
         html.Div([
@@ -1127,7 +1147,7 @@ page_inflation = html.Div([
                 dcc.Graph(
                     className='graph-figure',
                     figure=fig_cpi_real_time_trend, config=config)
-            ], className='content-container', style={'width': '41vw', 'height': '35vh', 'margin-left': '1vw'})
+            ], className='content-container', style={'width': '40vw', 'height': '35vh', 'margin-left': '1vw'})
         ], style={
             # 'float':'left',
             'width': '100%'})
@@ -1157,8 +1177,7 @@ prices_radioitems = html.Div([
         id='prices-radioitems-input',
         className='prices-radioitems-input'
     )
-    ]
-)
+])
 
 page_prices = html.Div([
     # header
@@ -1175,7 +1194,7 @@ page_prices = html.Div([
             # sub-title
             html.Div(
                 html.H5('Процентное изменение цен по сравнению с Январем 2021',
-                        style={'text-align': 'left', 'margin-top': '0vh'}),
+                        style={'text-align': 'left', 'margin-top': '0vh', 'font-size':'1.1em'}),
                 style={'float': 'left', 'width': '80vw', 'margin': '0 0 0 1vw'}),
             # chart, radioitems, prices structure
             html.Div([
@@ -1234,7 +1253,7 @@ page_prices = html.Div([
 page_budget = html.Div([
     header_big_budget,
     content_under_development
-])
+], style={'background-color':'#FFFFFF'})
 
 
 @callback(
@@ -1433,7 +1452,7 @@ def update_prices_gowth_plot(value):
     return fig, fig_structure
 
 
-content = html.Div(id='page-content', style={'font-weight': '200'})
+content = html.Div(id='page-content', className='content')
 
 app = Dash(
     name='rus',
@@ -1447,7 +1466,6 @@ server = app.server
 
 app.layout = html.Div(
     [dcc.Location(id="url"), content],
-    style={'font-family': [font_family_page, 'system-ui', 'Open Sans']}
 )
 
 if __name__ == '__main__':
