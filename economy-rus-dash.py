@@ -993,22 +993,31 @@ header_small_inflation = html.Div([
     html.Div([], className='hr-header-small'),
     html.Div([
         html.Div([
+            html.Div([], className='header-small-button-first', style={'border-bottom-right-radius': '3px'}),
+            html.Div([
+                html.Div([
+                    html.A('Инфляция', href='/inflation-and-prices')], className='header-small-button-active')
+                ], className='header-small-button-active-container'),
+
             html.Div(
-                html.A('Инфляция', href='/inflation-and-prices'), className='header-small-button-active'),
-            html.Div(
-                html.A('Цены', href='/prices'), className='header-small-button'),
-        ], style={'width': '99vw', 'margin-left': '1vw', 'display': 'flex', 'align-items': 'center'})
+                html.A('Цены', href='/prices'), className='header-small-button-post'),
+            html.Div([], className='header-small-button-last'),
+        ], style={'width': '100vw', 'display': 'flex', 'align-items': 'center'})
     ], className='header-small-container')
 ], className='header')
 header_small_prices = html.Div([
     html.Div([], className='hr-header-small'),
     html.Div([
         html.Div([
+            html.Div([], className='header-small-button-first'),
             html.Div(
-                html.A('Инфляция', href='/inflation-and-prices'), className='header-small-button'),
-            html.Div(
-                html.A('Цены', href='/prices'), className='header-small-button-active'),
-        ], style={'margin-left': '1vw', 'display': 'flex', 'align-items': 'center'})
+                html.A('Инфляция', href='/inflation-and-prices'), className='header-small-button-previous'),
+            html.Div([
+                html.Div(
+                    html.A('Цены', href='/prices'), className='header-small-button-active'),
+            ], className='header-small-button-active-container'),
+            html.Div([], className='header-small-button-last', style={'border-bottom-left-radius': '3px'}),
+        ], style={'width': '100vw', 'display': 'flex', 'align-items': 'center'})
     ], className='header-small-container')
 ])
 header_small_inflation_90 = html.Div([
