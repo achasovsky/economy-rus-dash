@@ -539,7 +539,7 @@ fig_cpi_real_time_groups.update_layout(
 
 # cpi real-time trend rolling
 fig_cpi_real_time_trend = make_subplots(
-        rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.05,  row_width=[0.5, 1])
+        rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.1,  row_width=[0.5, 1])
 
 fig_cpi_real_time_trend.add_trace(
     go.Scatter(
@@ -618,9 +618,14 @@ fig_cpi_real_time_trend.update_layout(
         tickformat="%b<br>%Y",
         labelalias=xtickaliases_short_wo_year,
     ),
+    yaxis1=dict(
+        showline=False,
+        showgrid=True
+    ),
     yaxis2=dict(
         tickfont=dict(size=11),
-        dtick=0.1
+        dtick=0.1,
+        showline=False,
     ),
     hovermode='x unified',
     hoverlabel=dict(
