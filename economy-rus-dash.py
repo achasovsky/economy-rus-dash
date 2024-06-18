@@ -494,7 +494,7 @@ fig_cpi_real_time_groups.add_shape(
     type='line', line_color='#808080', line_width=1
 )
 fig_cpi_real_time_groups.update_layout(
-    margin=dict(t=35, l=145, r=0, b=25),
+    margin=dict(t=35, l=145, r=0, b=35),
     xaxis=dict(
         showgrid=False,
         showspikes=False,
@@ -529,7 +529,7 @@ fig_cpi_real_time_groups.update_layout(
             size=12
         ),
         x=0.15,
-        y=-0.15,
+        y=-0.1,
         entrywidth=155,
     ),
     modebar=dict(
