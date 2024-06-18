@@ -391,7 +391,7 @@ fig_cpi_linechart_this_year.update_layout(
         tickformat="%b<br>%Y",
         labelalias=xtickaliases_cpi_linechart,
         showspikes=True,
-        showline=True,
+        showline=False,
         tickcolor='#FFFFFF',
         ticklen=5,
         showgrid=True,
@@ -898,7 +898,7 @@ inflation_real_target = html.Div([
     ], className='inflation-kpi-dash-container', style={'margin-top':'1.8vh'}),
     html.Div([], className='hr-grey-center', style={'width':'94%'}),
     html.Div([
-        html.H5('Цель ЦБ', className='inflation-kpi-dash-month'),
+        html.H5('Цель ЦБ', className='inflation-kpi-dash-month', style={'padding':'0.1em 0 0 0'}),
         html.P(f'{cpi_target_value} %', style={'color': f'{cpi_target_color}'}, className='inflation-kpi-dash-value')
     ], className='inflation-kpi-dash-container'),
 ], style={'width':'100%', 'height': '100%'})
