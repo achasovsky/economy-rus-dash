@@ -509,7 +509,7 @@ fig_cpi_real_time_groups.add_shape(
     )
 )
 fig_cpi_real_time_groups.update_layout(
-    margin=dict(t=35, l=145, r=0, b=35),
+    margin=dict(t=35, l=145, r=0, b=45),
     xaxis=dict(
         showgrid=False,
         showspikes=False,
