@@ -370,7 +370,7 @@ fig_cpi_linechart_this_year.add_trace(
     go.Scatter(
         x=cpi_linechart_this_year.index,
         y=cpi_linechart_this_year,
-        mode='markers', marker=dict(color=palette[2], size=7, opacity=1),
+        mode='markers', marker=dict(color=palette[2], size=6, opacity=1),
         showlegend=False, name='',
         text=xticktext_full_all,
         hovertemplate=(
@@ -397,8 +397,8 @@ fig_cpi_linechart_this_year.update_layout(
         showgrid=True,
     ),
     yaxis=dict(
-        showline=False,
         showgrid=True,
+        showline=False,
     )
 )
 
@@ -595,7 +595,7 @@ fig_cpi_real_time_trend.add_trace(
     ), row=2, col=1
 )
 fig_cpi_real_time_trend.add_annotation(
-    text='1). Используется средняя инфляция по всем группам товаров за 5 недель.',
+    text='1. Используется средняя инфляция по всем категориям товаров за 5 недель.',
     x=-0.005, y=-0.275,
     xref="paper", yref="paper",
     showarrow=False,
@@ -889,7 +889,7 @@ inflation_real_target = html.Div([
     html.H6('Текущее значение', className='dash-title'),
     html.Div([
         html.H5(f'{current_month_rus_year}', className='inflation-kpi-dash-month'),
-        html.P(f'{cpi_real_value} %', style={'color': f'{cpi_real_color}'}, className='inflation-kpi-dash-value')
+        html.P(f'{cpi_real_value} %', style={'color': f'{cpi_real_color}', 'margin':'0 0 0.1em 0'}, className='inflation-kpi-dash-value')
     ], className='inflation-kpi-dash-container', style={'margin-top':'1.8vh'}),
     html.Div([], className='hr-grey-center', style={'width':'94%'}),
     html.Div([
@@ -1049,10 +1049,10 @@ page_inflation = html.Div([
                         # empty space
                         html.Div([], style={
                             'width': '44vw',
-                            'height': '1vh',
+                            'height': '1.5vh',
                             'display': 'flex',
                         }),
-                        # cpi chart
+                        # dash cpi chart
                         html.Div([
                             html.H6('Динамика с 2021 года', className='dash-title'),
                             # bottom little line-chart
@@ -1060,10 +1060,10 @@ page_inflation = html.Div([
                                 dcc.Graph(
                                     className='graph-figure',
                                     figure=fig_cpi_linechart_this_year, config=config)
-                            ], style={'width':'100%', 'height':'30vh'})
+                            ], style={'width':'100%', 'height':'29.5vh'})
                         ], className='content-container', style={
                             'width': '44vw',
-                            'height': '34vh'
+                            'height': '33.5vh'
                         })
                     ])
                 ], style={
