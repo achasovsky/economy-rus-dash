@@ -444,8 +444,8 @@ html hr {
 .forecasts-container {
     float:left;
     height: 86%;
-    margin: 0 0 0 2.5vw;
-    padding: 2vh 0 0 0.75vw;
+    margin: 0 0 0 3.25vw;
+    padding: 2vh 0 0 0;
     /* align-items:center; */
     box-sizing:border-box;
     -moz-box-sizing: border-box;
@@ -463,7 +463,7 @@ html hr {
     font-size:0.95em;
     font-weight: 600;
     margin: 0 0 1vh 0;
-    padding-left: 0.5vw;
+    padding: 0;
 }
 
 /* FIGURES */

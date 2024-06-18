@@ -871,11 +871,12 @@ separator_icon = html.Div([
 inflation_forecasts = html.Div([
     html.H6('Прогнозы', className='dash-title'),
     html.Div([
-        html.H5('Центральный банк:', className='forecasts-institution'),
-        html.H5('Минфин:', className='forecasts-institution'),
-        html.H5('Минэк:', className='forecasts-institution'),
-        html.H5('Всемирный банк:', className='forecasts-institution')
+        html.H5('Центральный банк', className='forecasts-institution'),
+        html.H5('Минфин', className='forecasts-institution'),
+        html.H5('Минэк', className='forecasts-institution'),
+        html.H5('Всемирный банк', className='forecasts-institution')
     ], className='forecasts-container'),
+    html.Div([], className='vr-grey-center', style={'height':'58%', 'margin':'2vh 1vw 0 1vw'}),
     html.Div([
         html.H5('4.3%-4.8%', className='forecasts-number', style={'color': '#808080', 'font-weight': '600'}),
         html.H5('5.1%', className='forecasts-number', style={'color': saturate_color(palette[-10], 1, 'HEX')}),
@@ -890,7 +891,7 @@ inflation_real_target = html.Div([
         html.H5(f'{current_month_rus_year}', className='inflation-kpi-dash-month'),
         html.P(f'{cpi_real_value} %', style={'color': f'{cpi_real_color}'}, className='inflation-kpi-dash-value')
     ], className='inflation-kpi-dash-container', style={'margin-top':'1.8vh'}),
-    html.Div([], className='hr-grey-center', style={'width':'86%'}),
+    html.Div([], className='hr-grey-center', style={'width':'94%'}),
     html.Div([
         html.H5('Цель ЦБ', className='inflation-kpi-dash-month'),
         html.P(f'{cpi_target_value} %', style={'color': f'{cpi_target_color}'}, className='inflation-kpi-dash-value')
