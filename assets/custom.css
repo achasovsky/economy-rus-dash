@@ -428,7 +428,7 @@ html hr {
     float:left;
     width:11vw;
     text-align: right;
-    font-size: 1.4em;
+    font-size: 1.3em;
     font-weight: 300;
     color:#353535;
     margin: 0;
@@ -437,7 +437,7 @@ html hr {
 }
 .inflation-kpi-dash-value {
     text-align: center;
-    font-size: 2.1em;
+    font-size: 1.75em;
     font-weight: 500;
     margin: 0 0 0 0;
     padding: 0 0 0 1.5vw;

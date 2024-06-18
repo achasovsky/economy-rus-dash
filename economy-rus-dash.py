@@ -291,7 +291,7 @@ xticks_real_time_max = cpi_real_time['Текущий'].mean().round(2)
 
 cpi_real_time_index_all = cpi_real_time['Текущий'].index.tolist().index('Все категории')
 cpi_real_time_colors = [alpha_color(palette[2], 1, 'HEX')]*len(cpi_real_time)
-cpi_real_time_colors[cpi_real_time_index_all] = saturate_color(palette[1], 1, 'HEX')
+cpi_real_time_colors[cpi_real_time_index_all] = alpha_color(palette[2], 0.75, 'HEX')
 
 prices_food_growth = prices_food_growth*100-100
 # prices_food_growth_smoothed = smoothed(prices_food_growth, datetime_index=True)
@@ -310,10 +310,12 @@ if cpi_real_value > cpi_target_value:
     cpi_target_color = palette[1]
 else:
     cpi_target_color = palette[3]
+cpi_target_opacity = 0.9
 cpi_month_value = \
     dt.datetime.strftime(cpi_kipc_primary_perc_period_previous.index[-1], '%B %Y')
 cpi_month_value_sklon = \
     date_translate(cpi_month_value, date_format='%B %Y', kind='eng-rus', sklon='pred')
+
 
 
 cpi_linechart_this_year = cpi_kipc_primary_perc_period_previous.loc['2021':, 'Все товары и услуги'].copy()
@@ -329,7 +331,7 @@ window_stop_index_for_rolling = \
 cpi_real_time_groups_mean_rolling = \
     cpi_real_time_groups_mean.loc[
         cpi_real_time_groups_mean.index > window_stop_index_for_rolling,
-        'Все категории'].rolling(5).mean()
+        'Все категории'].rolling(4).mean()
 
 cpi_week_rolling_previous = cpi_real_time_groups_mean_rolling.loc[str(previous_year)].round(2)
 cpi_week_rolling_current = cpi_real_time_groups_mean_rolling.loc[str(current_year)].round(2)
@@ -346,9 +348,6 @@ len_cpi_real_time_trend_customdata_current = len(cpi_real_time_trend_customdata_
 
 cpi_real_time_trend_customdata_previous[:len_cpi_real_time_trend_customdata_current] = \
     cpi_real_time_trend_customdata_current
-
-# cpi_real_time_trend_diff_colors = \
-# [palette[2] if i > 0 else palette[0] for i in cpi_real_time_trend_diff]
 
 
 # // --- PREPARE CHARTS --- //
@@ -379,7 +378,7 @@ fig_cpi_linechart_this_year.add_trace(
     )
 )
 pl_hline(
-    cpi_target_value, width=2, line_dash='solid', opacity=1, color=cpi_target_color,
+    cpi_target_value, width=2, line_dash='solid', opacity=cpi_target_opacity, color=cpi_target_color,
     showlegend=False, figure=fig_cpi_linechart_this_year
 )
 fig_cpi_linechart_this_year.update_layout(
@@ -486,12 +485,28 @@ fig_cpi_real_time_groups.add_trace(
         name=f'Среднее за {previous_year} год'
     )
 )
+# fig_cpi_real_time_groups.add_shape(
+#     x0=cpi_week_target_value,
+#     x1=cpi_week_target_value,
+#     y0=xticks_real_time[0]-0.5,
+#     y1=xticks_real_time[-1]+0.5,
+#     type='line',
+#     line=dict(
+#         color=palette[1],
+#         width=2,
+#     ),
+#     opacity=cpi_target_opacity
+# )
 fig_cpi_real_time_groups.add_shape(
     x0=xticks_real_time_min,
     x1=xticks_real_time_max,
     y0=len(cpi_real_time),
     y1=len(cpi_real_time),
-    type='line', line_color='#808080', line_width=1
+    type='line',
+    line=dict(
+        color='#808080',
+        width=1
+    )
 )
 fig_cpi_real_time_groups.update_layout(
     margin=dict(t=35, l=145, r=0, b=35),
@@ -528,7 +543,7 @@ fig_cpi_real_time_groups.update_layout(
         font=dict(
             size=12
         ),
-        x=0.15,
+        x=0.175,
         y=-0.1,
         entrywidth=155,
     ),
@@ -566,7 +581,7 @@ fig_cpi_real_time_trend.add_trace(
         name='Цель ЦБ',
         mode='lines',
         line=dict(width=2, color=palette[1]),
-        opacity=1,
+        opacity=cpi_target_opacity,
         showlegend=True,
         hovertemplate='%{y}%'
         # hoverinfo='skip',
@@ -578,9 +593,12 @@ fig_cpi_real_time_trend.add_shape(
     y0=0,
     y1=0,
     type='line',
-    line_color='#808080',
-    line_width=1,
-    line_dash='5px',
+    line=dict(
+        color='#808080',
+        width=1,
+        dash='5px',
+    ),
+    opacity=cpi_target_opacity,
     row=1, col=1
 )
 
@@ -595,7 +613,7 @@ fig_cpi_real_time_trend.add_trace(
     ), row=2, col=1
 )
 fig_cpi_real_time_trend.add_annotation(
-    text='1. Используется средняя инфляция по всем категориям товаров за 5 недель.',
+    text='1. Считается средняя инфляция по всем категориям товаров за 4 недели.',
     x=-0.005, y=-0.275,
     xref="paper", yref="paper",
     showarrow=False,
@@ -696,7 +714,7 @@ fig_cpi_kipc.add_trace(
     )
 )
 pl_hline(
-    cpi_target_value, width=2, line_dash='solid', opacity=1, color=cpi_target_color,
+    cpi_target_value, width=2, line_dash='solid', opacity=cpi_target_opacity, color=cpi_target_color,
     showlegend=True,
     name='Цель ЦБ по инфляции',
     figure=fig_cpi_kipc
@@ -899,8 +917,8 @@ inflation_real_target = html.Div([
     ], className='inflation-kpi-dash-container', style={'margin-top':'1.8vh'}),
     html.Div([], className='hr-grey-center', style={'width':'94%'}),
     html.Div([
-        html.H5('Цель ЦБ', className='inflation-kpi-dash-month', style={'padding':'0.1em 0 0 0'}),
-        html.P(f'{cpi_target_value} %', style={'color': f'{cpi_target_color}'}, className='inflation-kpi-dash-value')
+        html.H5('Цель ЦБ', className='inflation-kpi-dash-month', style={'margin':'0.1em 0 0 0'}),
+        html.P(f'{cpi_target_value} %', style={'color': f'{cpi_target_color}', 'margin':'0.1em 0 0 0'}, className='inflation-kpi-dash-value')
     ], className='inflation-kpi-dash-container'),
 ], style={'width':'100%', 'height': '100%'})
 
@@ -1099,7 +1117,7 @@ page_inflation = html.Div([
         html.Div([
             # bottom line-chart title
             html.H4(f'Инфляция в {current_month_rus_sklon_year}', style={'width': '58vw', 'float': 'left'}),
-            html.H4('5-недельная инфляция', style={'width': '39vw', 'margin-left': '1vw', 'float': 'left'}),
+            html.H4('Среднее за 4 недели', style={'width': '39vw', 'margin-left': '1vw', 'float': 'left'}),
             # bottom big line-chart 
             html.Div([
                 dcc.Graph(
