@@ -176,7 +176,7 @@ pio.templates['primetheme'] = go.layout.Template(
             # align='right',
             bgcolor='rgba(255, 255, 255, 0.9)',
             # bgcolor='#FFFFFF',
-            bordercolor='#A5A5A5',
+            bordercolor='#B5B5B5',
             font=dict(
                 size=13,
                 family=font_family_chart_hoverlabel,
@@ -312,7 +312,7 @@ else:
     cpi_target_color = palette[3]
 cpi_month_value = \
     dt.datetime.strftime(cpi_kipc_primary_perc_period_previous.index[-1], '%B %Y')
-cpi_month_value = \
+cpi_month_value_sklon = \
     date_translate(cpi_month_value, date_format='%B %Y', kind='eng-rus', sklon='pred')
 
 
@@ -357,14 +357,6 @@ cpi_real_time_trend_customdata_previous[:len_cpi_real_time_trend_customdata_curr
 
 fig_cpi_linechart_this_year = go.Figure()
 
-# fig_cpi_linechart_this_year.add_trace(
-#     go.Scatter(
-#         x=smoothed(cpi_linechart_this_year, datetime_index=True).index,
-#         y=smoothed(cpi_linechart_this_year, datetime_index=True).values.ravel(),
-#         mode='lines', line=dict(width=3, color=saturate_color(palette[2], 0.8, 'HEX')),
-#         hoverinfo='skip', showlegend=False, name=''
-#     )
-# )
 fig_cpi_linechart_this_year.add_trace(
     go.Scatter(
         x=cpi_linechart_this_year.index,
@@ -387,7 +379,7 @@ fig_cpi_linechart_this_year.add_trace(
     )
 )
 pl_hline(
-    cpi_target_value, width=2, line_dash='solid', opacity=0.75, color=cpi_target_color,
+    cpi_target_value, width=2, line_dash='solid', opacity=1, color=cpi_target_color,
     showlegend=False, figure=fig_cpi_linechart_this_year
 )
 fig_cpi_linechart_this_year.update_layout(
@@ -439,9 +431,9 @@ fig_cpi_real_time_groups.add_trace(
         customdata=cpi_real_time,
         hovertemplate=(
             '<b>%{text}</b>'
-            + '<br>Значение на текущей неделе: <b>%{customdata[0]}%</b>'
-            + '<br>Среднее за две предыдущие недели: %{customdata[1]}%'
-            + '<br>Среднее за предыдущий месяц: %{customdata[2]}%'
+            + '<br>Текущая неделя: <b>%{customdata[0]}%</b>'
+            + '<br>Две предыдущие недели: %{customdata[1]}%'
+            + '<br>Предыдущий месяц: %{customdata[2]}%'
             + '<br>Среднее за %{customdata[4]} год: %{customdata[3]}%'
             + '<extra></extra>')
     )
@@ -458,9 +450,9 @@ fig_cpi_real_time_groups.add_trace(
         customdata=cpi_real_time,
         hovertemplate=(
             '<b>%{text}</b>'
-            + '<br>Значение на текущей неделе: <b>%{customdata[0]}%</b>'
-            + '<br>Среднее за две предыдущие недели: %{customdata[1]}%'
-            + '<br>Среднее за предыдущий месяц: %{customdata[2]}%'
+            + '<br>Текущая неделя: <b>%{customdata[0]}%</b>'
+            + '<br>Две предыдущие недели: %{customdata[1]}%'
+            + '<br>Предыдущий месяц: %{customdata[2]}%'
             + '<br>Среднее за %{customdata[4]} год: %{customdata[3]}%'
             + '<extra></extra>')
     )
@@ -477,9 +469,9 @@ fig_cpi_real_time_groups.add_trace(
         customdata=cpi_real_time,
         hovertemplate=(
             '<b>%{text}</b>'
-            + '<br>Значение на текущей неделе: <b>%{customdata[0]}%</b>'
-            + '<br>Среднее за две предыдущие недели: %{customdata[1]}%'
-            + '<br>Среднее за предыдущий месяц: %{customdata[2]}%'
+            + '<br>Текущая неделя: <b>%{customdata[0]}%</b>'
+            + '<br>Две предыдущие недели: %{customdata[1]}%'
+            + '<br>Предыдущий месяц: %{customdata[2]}%'
             + '<br>Среднее за %{customdata[4]} год: %{customdata[3]}%'
             + '<extra></extra>')
     )
@@ -502,7 +494,7 @@ fig_cpi_real_time_groups.add_shape(
     type='line', line_color='#808080', line_width=1
 )
 fig_cpi_real_time_groups.update_layout(
-    margin=dict(t=35, l=145, r=0, b=65),
+    margin=dict(t=35, l=145, r=0, b=25),
     xaxis=dict(
         showgrid=False,
         showspikes=False,
@@ -574,7 +566,7 @@ fig_cpi_real_time_trend.add_trace(
         name='Цель ЦБ',
         mode='lines',
         line=dict(width=2, color=palette[1]),
-        opacity=0.75,
+        opacity=1,
         showlegend=True,
         hovertemplate='%{y}%'
         # hoverinfo='skip',
@@ -698,7 +690,7 @@ fig_cpi_kipc.add_trace(
     )
 )
 pl_hline(
-    cpi_target_value, width=2, line_dash='solid', opacity=0.75, color=cpi_target_color,
+    cpi_target_value, width=2, line_dash='solid', opacity=1, color=cpi_target_color,
     showlegend=True,
     name='Цель ЦБ по инфляции',
     figure=fig_cpi_kipc
@@ -765,9 +757,6 @@ fig_cpi_kipc_ts.add_trace(
 # PRICES GROWTH
 
 
-# prices_food_growth_dropdown_values = [
-#     'Хлеб', 'Говядина', 'Свинина', 'Молочные продукты', 'Овощи'
-# ]
 prices_food_growth_products_dict = {
     'Хлеб': [
         'хлеб и булочные изделия из пшеничной муки различных сортов, кг',
@@ -872,77 +861,41 @@ fig_price_structure = go.Figure()
 
 # // --- PAGE FUNCTIONS --- //
 
-# def drawFigure(figure, config):
-#     result = html.Div([
-#         dbc.Card(
-#             dbc.CardBody([
-#                 dcc.Graph(figure=figure, config=config)
-#             ])
-#         ),
-#     ])
-#     return result
 
-
-# def drawFigure(figure, config, width):
-#
-#     result = html.Div([
-#         dcc.Graph(figure=figure, config=config)
-#     ], style={'width': width})
-#
-#     return result
 
 # // --- PAGE CONTENT --- //
 
 separator_icon = html.Div([
     html.Div([html.Img(src='assets/favicon.png', style={'width': '1.35em'})], className='separator')])
 
-inflation_target = html.Div([
-    html.H5('Цель ЦБ по инфляции', className='inflation-kpi-dash-title'),
-    html.P(
-        html.P(f'{cpi_target_value} %'), className='inflation-kpi-dash-content',
-        style={'color': f'{cpi_target_color}'})
-], className='inflation-kpi-dash-container')
-
-inflation_real = html.Div([
-    html.H5(f'Инфляция в {cpi_month_value}', className='inflation-kpi-dash-title'),
-    html.P(
-        html.P(f'{cpi_real_value} %'), className='inflation-kpi-dash-content',
-        style={'color': f'{cpi_real_color}'})
-], className='inflation-kpi-dash-container')
-
 inflation_forecasts = html.Div([
+    html.H6('Прогнозы', className='dash-title'),
     html.Div([
-        html.Div([
-            html.H5('Центральный банк', className='forecasts-title'),
-            html.P('4.3% - 4.8%', className='forecasts-content', style={
-                # 'color':saturate_color(palette[3], 1, 'HEX'),
-                'color': '#808080',
-                'font-weight': '600'
-            })
-        ], className='forecasts-container'),
-        html.Div([
-            html.H5('Минфин', className='forecasts-title'),
-            html.P('5.1%', className='forecasts-content', style={
-                'color': saturate_color(palette[-10], 1, 'HEX'),
-                # 'color': '#6063A3'
-            })
-        ], className='forecasts-container', style={'width': '18%'}),
-        html.Div([
-            html.H5('Минэк', className='forecasts-title'),
-            html.P('5.1%', className='forecasts-content', style={
-                'color': saturate_color(palette[-8], 1, 'HEX'),
-            })
-        ], className='forecasts-container', style={'width': '16%', 'margin-left': '1vw'}),
-        html.Div([
-            html.H5('Всемирный банк', className='forecasts-title'),
-            html.P('6.9%', className='forecasts-content', style={
-                # 'color':saturate_color(palette[7], 1, 'HEX'),
-                'color': saturate_color(palette[3], 1, 'HEX'),
-                # 'color': '#5B67BD'
-            })
-        ], className='forecasts-container'),
-    ], className='forecasts-main-container') 
-], style={'height': '100%'})
+        html.H5('Центральный банк:', className='forecasts-institution'),
+        html.H5('Минфин:', className='forecasts-institution'),
+        html.H5('Минэк:', className='forecasts-institution'),
+        html.H5('Всемирный банк:', className='forecasts-institution')
+    ], className='forecasts-container'),
+    html.Div([
+        html.H5('4.3%-4.8%', className='forecasts-number', style={'color': '#808080', 'font-weight': '600'}),
+        html.H5('5.1%', className='forecasts-number', style={'color': saturate_color(palette[-10], 1, 'HEX')}),
+        html.H5('5.1%', className='forecasts-number', style={'color': saturate_color(palette[-8], 1, 'HEX')}),
+        html.H5('6.9%', className='forecasts-number', style={'color': saturate_color(palette[3], 1, 'HEX')})
+    ], className='forecasts-container', style={'margin':'0'})
+], style={'width':'100%', 'height':'100%'})
+
+inflation_real_target = html.Div([
+    html.H6('Текущее значение', className='dash-title'),
+    html.Div([
+        html.H5(f'{current_month_rus_year}', className='inflation-kpi-dash-month'),
+        html.P(f'{cpi_real_value} %', style={'color': f'{cpi_real_color}'}, className='inflation-kpi-dash-value')
+    ], className='inflation-kpi-dash-container', style={'margin-top':'1.8vh'}),
+    html.Div([], className='hr-grey-center', style={'width':'86%'}),
+    html.Div([
+        html.H5('Цель ЦБ', className='inflation-kpi-dash-month'),
+        html.P(f'{cpi_target_value} %', style={'color': f'{cpi_target_color}'}, className='inflation-kpi-dash-value')
+    ], className='inflation-kpi-dash-container'),
+], style={'width':'100%', 'height': '100%'})
 
 header_big = html.Div([
     html.Div([], className='hr-header-big-top'),
@@ -958,6 +911,7 @@ header_big = html.Div([
     html.Div([], className='hr-header-big-bottom'),
     html.Div([separator_icon])
 ], className='header')
+
 header_big_inflation = html.Div([
     html.Div([], className='hr-header-big-top'),
     html.Div([
@@ -973,6 +927,7 @@ header_big_inflation = html.Div([
     # separator_icon
     html.Div([separator_icon])
 ], className='header')
+
 header_big_budget = html.Div([
     html.Div([], className='hr-header-big-top'),
     html.Div([
@@ -990,52 +945,40 @@ header_big_budget = html.Div([
 ], className='header')
 
 header_small_inflation = html.Div([
-    html.Div([], className='hr-header-small'),
-    html.Div([
-        html.Div([
-            html.Div([], className='header-small-button-first', style={'border-bottom-right-radius': '3px'}),
-            html.Div([
-                html.Div([
-                    html.A('Инфляция', href='/inflation-and-prices')], className='header-small-button-active')
-                ], className='header-small-button-active-container'),
-
-            html.Div(
-                html.A('Цены', href='/prices'), className='header-small-button-post'),
-            html.Div([], className='header-small-button-last'),
-        ], style={'width': '100vw', 'display': 'flex', 'align-items': 'center'})
-    ], className='header-small-container')
-], className='header')
-header_small_prices = html.Div([
-    html.Div([], className='hr-header-small'),
     html.Div([
         html.Div([
             html.Div([], className='header-small-button-first'),
-            html.Div(
-                html.A('Инфляция', href='/inflation-and-prices'), className='header-small-button-previous'),
             html.Div([
-                html.Div(
-                    html.A('Цены', href='/prices'), className='header-small-button-active'),
-            ], className='header-small-button-active-container'),
-            html.Div([], className='header-small-button-last', style={'border-bottom-left-radius': '3px'}),
+                html.Div([
+                    html.A('Инфляция', href='/inflation-and-prices')], className='header-small-button-active')
+                ]),
+            html.Div([
+                html.A('Цены', href='/prices')], className='header-small-button'),
+            html.Div([], className='header-small-button-last'),
         ], style={'width': '100vw', 'display': 'flex', 'align-items': 'center'})
-    ], className='header-small-container')
-])
-header_small_inflation_90 = html.Div([
+    ])
+], className='header')
+
+header_small_prices = html.Div([
     html.Div([
         html.Div([
-            html.Div(
-                html.A('Инфляция', href='/inflation-and-prices'), className='header-small-button'),
-            html.Div(
-                html.A('Цены', href='/prices'), className='header-small-button'),
-        ], style={'margin-left': '1vw', 'display': 'flex', 'align-items': 'center'})
-    ], className='header-small-container')
-])
+            html.Div([], className='header-small-button-first'),
+            html.Div([
+                html.Div([
+                    html.A('Инфляция', href='/inflation-and-prices')], className='header-small-button')
+                ]),
+            html.Div([
+                html.A('Цены', href='/prices')], className='header-small-button-active'),
+            html.Div([], className='header-small-button-last'),
+        ], style={'width': '100vw', 'display': 'flex', 'align-items': 'center'})
+    ])
+], className='header')
 
-content_under_development = html.Div([
+content_under_construction = html.Div([
     html.Div(
         [html.Img(src='assets/under-construction.png', style={'width': '5vw'})],
         style={'margin-top': '1vh', 'display': 'flex', 'justify-content': 'center'}),
-    html.Div(['Страница в разработке'], style={'margin-top': '1vh', 'font-size': '1em', 'text-align': 'center'}),
+    html.Div(['Страница в разработке'], style={'margin-top': '1vh', 'font-size': '1.1em', 'text-align': 'center'}),
 ], style={'display': 'inline'})
 
 page_start = html.Div([
@@ -1043,7 +986,7 @@ page_start = html.Div([
     header_big,
     html.Div([
         # content
-        content_under_development
+        content_under_construction
     ], className='page-container', style={'background-color':'#FFFFFF'})
 ], style={'background-color':'#FFFFFF'})
 
@@ -1053,94 +996,98 @@ page_inflation = html.Div([
     header_small_inflation,
     # content
     html.Div([
-        # first row
+        # first row - kpi, inflation chart, groups real-time
         html.Div([
-            # left title
-            html.Div(
-                html.H4('Ключевые показатели'),
-                style={
-                    'float': 'left',
-                    'width': '44vw',
-                }),
-            # right title
-            html.Div(
-                    html.H4('Недельные данные'),
+            # titles
+            html.Div([
+                # left title
+                html.Div(
+                    html.H4('Ключевые показатели'),
                     style={
                         'float': 'left',
-                        'width': '52vw',
-                        'margin-left': '1vw'
+                        'width': '44vw',
                     }),
-            # left big dash
-            html.Div([
-                # left little dash
-                html.Div([
-                    html.Div(
-                        inflation_target,
-                        style={
-                            'float': 'left',
-                            'width': '50%',
-                        }),
-                    # right little dash
-                    html.Div(
-                        inflation_real,
-                        style={
-                            'float': 'left',
-                            'width': '50%',
-                        }),
-                ], style={
-                    'height': '20%',
-                    'display': 'flex',
-                    'align-items': 'center',
-                    'padding': '0 5vw 0 5vw',
-                }),
-                html.Div(className='hr-grey', style={'width': '96%', 'margin': 'auto'}),
-                html.H6(['Прогнозы на год'], style={
-                    'height': '7%',
-                    'padding': '0 0 0 1vw',
-                    'text-align': 'left',
-                    # 'border':'1px solid red',
-                    }),
+                # right title
                 html.Div(
-                    inflation_forecasts,
-                    style={
-                        'width': '100%',
-                        'height': '16%',
-                    }),
-                html.Div(className='hr-grey', style={'width': '96%', 'margin': 'auto'}),
-                # line-chart title
-                html.H6(['Динамика с 2021 года'], style={
-                    'height': '7%',
-                    'padding': '0 0 0 1vw',
-                    'text-align': 'left',
-                }),
-                # bottom little line-chart
-                html.Div([
-                    dcc.Graph(
-                        className='graph-figure',
-                        figure=fig_cpi_linechart_this_year, config=config)
-                ], style={
-                    # 'float':'top',
-                    'height': '49%',
-                    # 'display': 'inline-block'
-                }),
-            ], className='content-container', style={'width': '44vw', 'height': '55vh'}),
-            # right big dash
+                        html.H4('Недельные данные'),
+                        style={
+                            'float': 'left',
+                            'width': '52vw',
+                            'margin-left': '1vw'
+                        }),
+            ], style={'width':'98vw', 'display':'flex'}),
+            # first row dashboards
             html.Div([
-                html.H6(['Основные категории товаров'], style={
-                    'height': '3vh',
-                    'padding': '0 0 0 1vw',
-                    'text-align': 'left',
-                    'align-items': 'end',
-                }),
+                # left big dash
                 html.Div([
-                    dcc.Graph(
-                        className='graph-figure',
-                        figure=fig_cpi_real_time_groups, config=config)
+                    # first row - kpi, forecasts
+                    html.Div([
+                        # dash forecasts
+                        html.Div(inflation_forecasts,
+                                 className='content-container', style={
+                                     'width': '21.5vw',
+                                     'height': '100%'
+                                     }),
+                        # empty space
+                        html.Div([], style={
+                            'width':'1vw',
+                            'height':'100%',
+                            'display':'flex',
+                            'float': 'left'
+                        }),
+                        # dash inflation
+                        html.Div(inflation_real_target,
+                                 className='content-container', style={
+                                     'width': '21.5vw',
+                                     'height': '100%',
+                                     'float': 'left'
+                                     }),
+                    ], style={'width': '44vw', 'height': '20vh'}),
+                    # second row - inflation chart
+                    html.Div([
+                        # empty space
+                        html.Div([], style={
+                            'width': '44vw',
+                            'height': '1vh',
+                            'display': 'flex',
+                        }),
+                        # cpi chart
+                        html.Div([
+                            html.H6('Динамика с 2021 года', className='dash-title'),
+                            # bottom little line-chart
+                            html.Div([
+                                dcc.Graph(
+                                    className='graph-figure',
+                                    figure=fig_cpi_linechart_this_year, config=config)
+                            ], style={'width':'100%', 'height':'30vh'})
+                        ], className='content-container', style={
+                            'width': '44vw',
+                            'height': '34vh'
+                        })
+                    ])
                 ], style={
-                    'height': '52vh',
-                })
-            ], className='content-container', style={'width': '52vw', 'height': '55vh', 'margin-left': '1vw'})
-        ], style={'width': '100%'}),
+                    'width': '44vw',
+                    'height': '55vh',
+                    'float': 'left',
+                    'display': 'inline-block',
+                }),
+                # right big dash - groups real-time
+                html.Div([
+                    html.H6('Основные категории товаров', className='dash-title'),
+                    html.Div([
+                        dcc.Graph(
+                            className='graph-figure',
+                            figure=fig_cpi_real_time_groups, config=config)
+                    ], style={'height': '51vh'})
+                ], style={
+                    'width':'52vw',
+                    'height':'55vh',
+                    'float':'left',
+                    'display': 'inline',
+                    'margin':'0 0 0 2vw',
+                }, className='content-container')
+            ], style={'width':'98vw', 'display':'flex'}),
+        ]),
         # second row
         html.Div([
             # bottom line-chart title
@@ -1156,13 +1103,10 @@ page_inflation = html.Div([
                 dcc.Graph(
                     className='graph-figure',
                     figure=fig_cpi_real_time_trend, config=config)
-            ], className='content-container', style={'width': '40vw', 'height': '35vh', 'margin-left': '1vw'})
-        ], style={
-            # 'float':'left',
-            'width': '100%'})
+            ], className='content-container', style={'width': '40vw', 'height': '35vh', 'margin-left': '2vw'})
+        ], style={'float':'left', 'width': '100%'})
     ], className='page-container')
 ])
-
 
 def prices_radioitems_generate_items(values):
     result = []
@@ -1174,12 +1118,7 @@ def prices_radioitems_generate_items(values):
 prices_radioitems = html.Div([
     dbc.Label('Категория', style={
         'font-weight': '500',
-        # 'text-align':'center'
     }),
-    # dbc.RadioItems(
-    #     options=prices_radioitems_generate_items(prices_food_growth_products_dict.keys()),
-    #     value='Хлеб',
-    #     id='prices-radioitems-input'),
     dcc.RadioItems(
         options=prices_radioitems_generate_items(prices_food_growth_products_dict.keys()),
         value='Хлеб',
@@ -1218,7 +1157,7 @@ page_prices = html.Div([
                     # border
                     html.Div(
                         [], className='vr-grey',
-                        style={'height': '36vh', 'margin': '0 2vw 0 1vw', 'float': 'left'}),
+                        style={'height': '36vh', 'margin': 'auto 2vw auto 1vw', 'float': 'left'}),
                     # raioitems container
                     html.Div([
                         prices_radioitems
@@ -1261,7 +1200,7 @@ page_prices = html.Div([
 
 page_budget = html.Div([
     header_big_budget,
-    content_under_development
+    content_under_construction,
 ], style={'background-color':'#FFFFFF'})
 
 
