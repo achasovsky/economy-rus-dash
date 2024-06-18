@@ -528,7 +528,7 @@ fig_cpi_real_time_groups.update_layout(
         font=dict(
             size=12
         ),
-        x=0,
+        x=0.15,
         y=-0.15,
         entrywidth=155,
     ),
@@ -601,7 +601,7 @@ fig_cpi_real_time_trend.add_annotation(
     showarrow=False,
 )
 fig_cpi_real_time_trend.update_layout(
-    margin=dict(t=10, b=60, r=10, l=50),
+    margin=dict(t=10, b=60, r=20, l=50),
     xaxis1=dict(
         ticks='',
         dtick='M1',
@@ -636,6 +636,7 @@ fig_cpi_real_time_trend.update_layout(
         orientation='v'
     ),
     legend=dict(
+        x=-0.025,
         y=1.04,
         yanchor='bottom',
         xanchor='left',
