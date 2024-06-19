@@ -830,7 +830,7 @@ prices_food_growth_plots_dict = {
     'птица сельскохозяйственная живая':
         ['Цена птицы сельскохозяйственной', palette[0], '5px'],
     'яйца куриные, 10 шт.':
-        ['Цены для потребителей', palette[7], 'solid'],
+        ['Цены для потребителей', palette[-4], 'solid'],
     'яйца куриные в скорлупе свежие':
         ['Цены производителей', palette[0], '5px'],
     'масло сливочное, кг':
@@ -860,25 +860,19 @@ prices_food_growth_plots_dict = {
     'овощи':
         ['Овощи (средняя цена производителей)', palette[0], '5px']
 }
-# prices_food_growth_properties_dict = {
-#     'Хлеб': [0.1, None],
-#     'Говядина': [0.1, None],
-#     'Свинина': [0.1, None],
-#     'Курица': [0.1, None],
-#     'Куриные яйца': [0.2, None],
-#     'Молочные продукты': [0.1, 90],
-#     'Овощи': [0.5, 90]
-# }
 prices_food_growth_properties_dict = {
-    'Хлеб': [10, None, 2],
-    'Говядина': [10, None, 2],
-    'Свинина': [5, None, 2],
-    'Курица': [10, None, 2],
-    'Яйца куриные': [20, None, 2],
-    'Молочные продукты': [10, 100, 1.5],
-    'Овощи': [30, 90, 1.5]
+    'Хлеб': [10, None, 2.5],
+    'Говядина': [10, None, 2.5],
+    'Свинина': [5, None, 2.5],
+    'Курица': [10, None, 2.5],
+    'Яйца куриные': [20, None, 2.5],
+    'Молочные продукты': [10, 100, 2],
+    'Овощи': [30, 90, 2]
 }
-
+prices_food_growth_raw_products = [
+    'пшеница', 'крупный рогатый скот', 'свиньи', 'птица сельскохозяйственная живая', 
+    'яйца куриные в скорлупе свежие', 'молоко сырое крупного рогатого скота', 'овощи'
+]
 
 fig_prices_food_growth = go.Figure()
 fig_price_structure = go.Figure()
@@ -1182,7 +1176,7 @@ page_prices = html.Div([
                     # border
                     html.Div(
                         [], className='vr-grey',
-                        style={'height': '36vh', 'margin': 'auto 2vw auto 1vw', 'float': 'left'}),
+                        style={'height': '42vh', 'margin': 'auto 2vw auto 1vw', 'float': 'left'}),
                     # raioitems container
                     html.Div([
                         prices_radioitems
@@ -1195,7 +1189,7 @@ page_prices = html.Div([
                         'align-items': 'center',
                         'font-size': '1em',
                          }),
-                ], style={'width': '100%', 'height': '40vh', 'display': 'flex'}),
+                ], style={'width': '100%', 'height': '46vh', 'display': 'flex'}),
                 # prices structure container
                 html.Div([
                     # top border
@@ -1218,7 +1212,7 @@ page_prices = html.Div([
                         'padding-right': '2vw'
                     }),
                     ], style={'width': '63vw', 'height': '30vh', 'display': 'inline-block'}),
-            ], className='content-container', style={'width': '85vw', 'height': '72vh', 'display': 'inline-block'}),
+            ], className='content-container', style={'width': '85vw', 'height': '78vh', 'display': 'inline-block'}),
         ]),  
     ], className='page-container')
 ])
@@ -1252,19 +1246,12 @@ def update_prices_gowth_plot(value):
     """
     value - группа товаров ('Хлеб', 'Овощи')
     """
-    # if value is None:
-    #     fig_prices_food_growth = figure1
-    #     fig_price_structure = figure2
 
-    # else:
     # PRICES GROWTH
-    # prices_food_growth = prices_food_growth_smoothed[prices_food_growth_products_dict[value]].copy()
+    
     df = prices_food_growth[prices_food_growth_products_dict[value]].copy()
     df_len = len(df)
-    # prices_food_growth = prices_food_growth[prices_food_growth_products_dict[value]].copy()
     
-    # if isinstance(prices_food_growth_3, pd.Series):
-    #     prices_food_growth_3 = prices_food_growth_3.to_frame()
     if isinstance(df, pd.Series):
         df = df.to_frame()
     
@@ -1288,13 +1275,19 @@ def update_prices_gowth_plot(value):
     )
     # charts
     for col in df.columns:
+
+        if col not in prices_food_growth_raw_products:
+            line_width_prices_food_growth = prices_food_growth_properties_dict[value][2]
+        else:
+            line_width_prices_food_growth = 2
+        
         fig.add_trace(
             go.Scatter(
                 x=df.index,
                 y=df[col],
                 line=dict(
                     shape='spline',
-                    width=prices_food_growth_properties_dict[value][2],
+                    width=line_width_prices_food_growth,
                     color=prices_food_growth_plots_dict[col][1],
                     dash=prices_food_growth_plots_dict[col][2],
                 ),
@@ -1314,15 +1307,6 @@ def update_prices_gowth_plot(value):
         line_dash='2px'
                 
     )
-    # fig_prices_food_growth.add_trace(
-    #     go.Scatter(
-    #         x=[df.index[0], df.index[-1]],
-    #         y=[0]*df_len,
-    #         line_color='#707070',
-    #         hoverinfo='skip',
-    #         showlegend=False,
-    #     )
-    # )
 
     fig.update_layout(
         margin=dict(b=55, r=10, l=60),
@@ -1348,7 +1332,7 @@ def update_prices_gowth_plot(value):
             ),
         ),
         modebar=dict(
-            orientation='h'
+            orientation='v'
         )
     )
 

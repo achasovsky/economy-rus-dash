@@ -2908,11 +2908,25 @@ def add_break_after_index(x, index=0):
 
 def pl_ticktext_transform_dates_to_rus(data, full_name=False, with_year=True):
     '''
-    data - datetime
+    data : datetime series
+
+    if full_name:
+        Timestamp('2023-01-09 00:00:00') --> ['Январь 9, 2023']
+    else:
+        Timestamp('2023-01-09 00:00:00') --> ['Янв 9, 2023']
+    if not with_year:
+        Timestamp('2023-01-09 00:00:00') --> ['Янв, 9']
     '''
     years = data.year
     months = data.month
-    day = data.day
+    days = data.day
+
+    if isinstance(years, int):
+        years = [years]
+    if isinstance(months, int):
+        months = [months]
+    if isinstance(days, int):
+        days = [days]
 
     if full_name:
         months_rus_dict = {
@@ -2944,11 +2958,14 @@ def pl_ticktext_transform_dates_to_rus(data, full_name=False, with_year=True):
             11: 'Ноя',
             12: 'Дек'
         }
+
     # months_rus_dict = { v:k for k, v in months_rus_dict.items()} 
     months_new = [months_rus_dict.get(item, item)  for item in months]
-    dates_new = [i+' '+str(j) for i, j in zip(months_new, day)]
     if with_year:
+        dates_new = [i+' '+str(j) for i, j in zip(months_new, days)]
         dates_new = [i+', '+str(j) for i,j in zip(dates_new, years)]
+    else:
+        dates_new = [i+', '+str(j) for i, j in zip(months_new, days)]
 
     return dates_new
 
