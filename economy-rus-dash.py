@@ -716,7 +716,7 @@ fig_cpi_kipc.add_trace(
 pl_hline(
     cpi_target_value, width=2, line_dash='solid', opacity=cpi_target_opacity, color=cpi_target_color,
     showlegend=True,
-    name='Цель ЦБ по инфляции',
+    name='Цель ЦБ',
     figure=fig_cpi_kipc
 )
 fig_cpi_kipc.update_layout(
@@ -966,32 +966,28 @@ header_big_budget = html.Div([
 header_small_inflation = html.Div([
     html.Div([
         html.Div([
-            html.Div([], className='header-small-button-first'),
             html.Div([
                 html.Div([
                     html.A('Инфляция', href='/inflation-and-prices')], className='header-small-button-active')
                 ]),
             html.Div([
                 html.A('Цены', href='/prices')], className='header-small-button'),
-            html.Div([], className='header-small-button-last'),
         ], style={'width': '100vw', 'display': 'flex', 'align-items': 'center'})
     ])
-], className='header')
+], className='header-small-container')
 
 header_small_prices = html.Div([
     html.Div([
         html.Div([
-            html.Div([], className='header-small-button-first'),
             html.Div([
                 html.Div([
                     html.A('Инфляция', href='/inflation-and-prices')], className='header-small-button')
                 ]),
             html.Div([
                 html.A('Цены', href='/prices')], className='header-small-button-active'),
-            html.Div([], className='header-small-button-last'),
         ], style={'width': '100vw', 'display': 'flex', 'align-items': 'center'})
     ])
-], className='header')
+], className='header-small-container')
 
 content_under_construction = html.Div([
     html.Div(
