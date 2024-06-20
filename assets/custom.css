@@ -335,30 +335,6 @@ html hr {
     padding: 0 0 0 1vw;
     /* border-top: 4px solid #3C3D4B; */
 }
-.header-small-button-first {
-    display:inline;
-    float:left;
-    background-color: #3C3D4B;
-    color: #FFFFFF;
-    width: 1vw;
-    height: 4vh;
-    line-height: 4vh;
-    font-size: 1.1em;
-    font-weight: 300;
-    text-align: center;
-}
-.header-small-button-last {
-    display:inline;
-    float:left;
-    background-color: #3C3D4B;
-    color: #FFFFFF;
-    width: 100%;
-    height: 4vh;
-    line-height: 4vh;
-    font-size: 1.1em;
-    font-weight: 300;
-    text-align: center;
-}
 .header-small-button {
     display:inline-block;
     float:left;
@@ -386,8 +362,8 @@ html hr {
     /* background-color: #F0F1F5; */
     background-color: #F6F6F6;
     width: 9vw;
-    height: 3vh;
-    line-height: 3vh;
+    height: 4vh;
+    line-height: 4vh;
     font-size: 1.1em;
     text-align: center;
     /* border-top-left-radius: 3px; */
