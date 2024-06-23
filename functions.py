@@ -2906,7 +2906,7 @@ def add_break_after_index(x, index=0):
     return x_new
 
 
-def pl_ticktext_transform_dates_to_rus(data, full_name=False, with_year=True):
+def datetime_to_rus(data, full_name=True, with_year=True, sklon=True, day_first=True, only_month=False):
     '''
     data : datetime series
 
@@ -2928,7 +2928,7 @@ def pl_ticktext_transform_dates_to_rus(data, full_name=False, with_year=True):
     if isinstance(days, int):
         days = [days]
 
-    if full_name:
+    if full_name & (not sklon):
         months_rus_dict = {
             1: 'Январь',
             2: 'Февраль',
@@ -2942,6 +2942,21 @@ def pl_ticktext_transform_dates_to_rus(data, full_name=False, with_year=True):
             10: 'Октябрь',
             11: 'Ноябрь',
             12: 'Декабрь'
+        }
+    elif full_name & sklon:
+        months_rus_dict = {
+            1: 'Января',
+            2: 'Февраля',
+            3: 'Марта',
+            4: 'Апреля',
+            5: 'Мая',
+            6: 'Июня',
+            7: 'Июля',
+            8: 'Августа',
+            9: 'Сентября',
+            10: 'Октября',
+            11: 'Ноября',
+            12: 'Декабря'
         }
     else:
         months_rus_dict = {
@@ -2961,11 +2976,25 @@ def pl_ticktext_transform_dates_to_rus(data, full_name=False, with_year=True):
 
     # months_rus_dict = { v:k for k, v in months_rus_dict.items()} 
     months_new = [months_rus_dict.get(item, item)  for item in months]
-    if with_year:
-        dates_new = [i+' '+str(j) for i, j in zip(months_new, days)]
-        dates_new = [i+', '+str(j) for i,j in zip(dates_new, years)]
+
+    if only_month:
+        if with_year:
+            dates_new = [i+', '+str(j) for i,j in zip(months_new, years)]
+        else:
+            dates_new = [i for i in months_new]
+
     else:
-        dates_new = [i+', '+str(j) for i, j in zip(months_new, days)]
+        if with_year:
+            # days location
+            if day_first:
+                dates_new = [str(d)+' '+m+', '+str(y) for d, m, y in zip(days, months_new, years)]
+            else:
+                dates_new = [m+' '+str(d)+', '+str(y) for d, m, y in zip(days, months_new, years)]
+        else:
+            if day_first:
+                dates_new = [str(d)+' '+m for d, m in zip(days, months_new)]
+            else:
+                dates_new = [m+', '+str(d) for d, m in zip(days, months_new)]
 
     return dates_new
 

@@ -293,6 +293,9 @@ cpi_real_time_index_all = cpi_real_time['Текущий'].index.tolist().index('
 cpi_real_time_colors = [alpha_color(palette[2], 1, 'HEX')]*len(cpi_real_time)
 cpi_real_time_colors[cpi_real_time_index_all] = alpha_color(palette[2], 0.75, 'HEX')
 
+cpi_real_time_groups_actual_data = datetime_to_rus(cpi_real_time_groups_mean.index[-1], full_name=True)[0]
+cpi_real_time_groups_title = f'Недельные данные ({cpi_real_time_groups_actual_data})'
+
 prices_food_growth = prices_food_growth*100-100
 # prices_food_growth_smoothed = smoothed(prices_food_growth, datetime_index=True)
 
@@ -316,8 +319,6 @@ cpi_month_value = \
 cpi_month_value_sklon = \
     date_translate(cpi_month_value, date_format='%B %Y', kind='eng-rus', sklon='pred')
 
-
-
 cpi_linechart_this_year = cpi_kipc_primary_perc_period_previous.loc['2021':, 'Все товары и услуги'].copy()
 
 if len(cpi_linechart_this_year) > 7:
@@ -339,10 +340,8 @@ cpi_week_rolling_current = cpi_real_time_groups_mean_rolling.loc[str(current_yea
 cpi_real_time_trend_diff = (cpi_week_rolling_current.values
                             - cpi_week_rolling_previous.values[:len(cpi_week_rolling_current)]).round(2)
 
-cpi_real_time_trend_customdata_previous = \
-    pl_ticktext_transform_dates_to_rus(cpi_week_rolling_previous.index)
-cpi_real_time_trend_customdata_current = \
-    pl_ticktext_transform_dates_to_rus(cpi_week_rolling_current.index)
+cpi_real_time_trend_customdata_previous = datetime_to_rus(cpi_week_rolling_previous.index)
+cpi_real_time_trend_customdata_current = datetime_to_rus(cpi_week_rolling_current.index)
 
 len_cpi_real_time_trend_customdata_current = len(cpi_real_time_trend_customdata_current)
 
@@ -505,8 +504,15 @@ fig_cpi_real_time_groups.add_trace(
 #     type='line', line_color=saturate_color(palette[1], 1.5, 'HEX'), line_width=2)
 
 fig_cpi_real_time_groups.add_shape(
-    x0=xticks_real_time_min,
-    x1=xticks_real_time_max,
+    x0=0,
+    x1=0,
+    y0=0-0.35,
+    y1=len(cpi_real_time)-1+0.35,
+    type='line', line_color=alpha_color('#000000', 0.5, 'HEX'), line_width=1)
+
+fig_cpi_real_time_groups.add_shape(
+    x0=0,
+    x1=0.2,
     y0=len(cpi_real_time),
     y1=len(cpi_real_time),
     type='line',
@@ -527,7 +533,7 @@ fig_cpi_real_time_groups.update_layout(
         tickcolor='#808080',
         ticklen=6,
         tickwidth=1,
-        tickvals=[xticks_real_time_min, xticks_real_time_max],
+        tickvals=[0, 0.2],
         tickfont=dict(
             color='#404040',
             size=10
@@ -1034,7 +1040,7 @@ page_inflation = html.Div([
                     }),
                 # right title
                 html.Div(
-                        html.H4('Недельные данные'),
+                        html.H4(cpi_real_time_groups_title),
                         style={
                             'float': 'left',
                             'width': '52vw',
