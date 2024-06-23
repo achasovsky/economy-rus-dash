@@ -485,18 +485,25 @@ fig_cpi_real_time_groups.add_trace(
         name=f'Среднее за {previous_year} год'
     )
 )
+
+fig_cpi_real_time_groups.add_trace(
+    go.Scatter(
+        mode='markers',
+        x=[cpi_week_target_value],
+        y=[cpi_real_time_index_all],
+        marker=dict(color=saturate_color(palette[1], 1, 'HEX'),  size=7, symbol='diamond-tall'),
+        showlegend=True, hoverinfo='skip',
+        name='Цель ЦБ'
+    )
+)
+
 # fig_cpi_real_time_groups.add_shape(
 #     x0=cpi_week_target_value,
 #     x1=cpi_week_target_value,
-#     y0=xticks_real_time[0]-0.5,
-#     y1=xticks_real_time[-1]+0.5,
-#     type='line',
-#     line=dict(
-#         color=palette[1],
-#         width=2,
-#     ),
-#     opacity=cpi_target_opacity
-# )
+#     y0=cpi_real_time_index_all-0.2,
+#     y1=cpi_real_time_index_all+0.2,
+#     type='line', line_color=saturate_color(palette[1], 1.5, 'HEX'), line_width=2)
+
 fig_cpi_real_time_groups.add_shape(
     x0=xticks_real_time_min,
     x1=xticks_real_time_max,
@@ -543,9 +550,12 @@ fig_cpi_real_time_groups.update_layout(
         font=dict(
             size=12
         ),
-        x=0.175,
-        y=-0.1,
-        entrywidth=155,
+        # x=0.175,
+        # y=-0.1,
+        # entrywidth=155,
+        x=-0.05,
+        y=-0.175,
+        entrywidth=141.5,
     ),
     modebar=dict(
         orientation='v'
@@ -893,14 +903,14 @@ inflation_forecasts = html.Div([
         html.H5('Министерство финансов', className='forecasts-institution'),
         html.H5('Минэкономразвития', className='forecasts-institution'),
         html.H5('Всемирный банк', className='forecasts-institution')
-    ], className='forecasts-container', style={'margin':'0 0 0 1.5vw'}),
+    ], className='forecasts-container', style={'margin':'0.45vh 0 0 1.5vw'}),
     html.Div([], className='vr-grey-center', style={'height':'58%', 'margin':'2vh 1vw 0 1vw'}),
     html.Div([
         html.H5('4.3%-4.8%', className='forecasts-number', style={'color': '#707070', 'font-weight': '600'}),
         html.H5('5.1%', className='forecasts-number', style={'color': saturate_color(palette[-10], 1, 'HEX')}),
         html.H5('5.1%', className='forecasts-number', style={'color': saturate_color(palette[-8], 1, 'HEX')}),
         html.H5('6.9%', className='forecasts-number', style={'color': saturate_color(palette[3], 1, 'HEX')})
-    ], className='forecasts-container', style={'margin':'0'})
+    ], className='forecasts-container', style={'margin':'0.45vh 0 0 0'})
 ], style={'width':'100%', 'height':'100%'})
 
 inflation_real_target = html.Div([
