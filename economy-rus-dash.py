@@ -887,16 +887,16 @@ separator_icon = html.Div([
     html.Div([html.Img(src='assets/favicon.png', style={'width': '1.35em'})], className='separator')])
 
 inflation_forecasts = html.Div([
-    html.H6('Прогнозы', className='dash-title'),
+    html.H6('Годовые прогнозы', className='dash-title'),
     html.Div([
         html.H5('Центральный банк', className='forecasts-institution'),
-        html.H5('Минфин', className='forecasts-institution'),
-        html.H5('Минэк', className='forecasts-institution'),
+        html.H5('Министерство финансов', className='forecasts-institution'),
+        html.H5('Минэкономразвития', className='forecasts-institution'),
         html.H5('Всемирный банк', className='forecasts-institution')
-    ], className='forecasts-container'),
+    ], className='forecasts-container', style={'margin':'0 0 0 1.5vw'}),
     html.Div([], className='vr-grey-center', style={'height':'58%', 'margin':'2vh 1vw 0 1vw'}),
     html.Div([
-        html.H5('4.3%-4.8%', className='forecasts-number', style={'color': '#808080', 'font-weight': '600'}),
+        html.H5('4.3%-4.8%', className='forecasts-number', style={'color': '#707070', 'font-weight': '600'}),
         html.H5('5.1%', className='forecasts-number', style={'color': saturate_color(palette[-10], 1, 'HEX')}),
         html.H5('5.1%', className='forecasts-number', style={'color': saturate_color(palette[-8], 1, 'HEX')}),
         html.H5('6.9%', className='forecasts-number', style={'color': saturate_color(palette[3], 1, 'HEX')})

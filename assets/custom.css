@@ -423,7 +423,7 @@ html hr {
 .forecasts-container {
     float:left;
     height: 86%;
-    margin: 0 0 0 3.25vw;
+    margin: 0 0 0 0;
     padding: 2vh 0 0 0;
     /* align-items:center; */
     box-sizing:border-box;
