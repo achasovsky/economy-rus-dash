@@ -504,12 +504,12 @@ fig_cpi_real_time_groups.add_trace(
 #     y1=cpi_real_time_index_all+0.2,
 #     type='line', line_color=saturate_color(palette[1], 1.5, 'HEX'), line_width=2)
 
-fig_cpi_real_time_groups.add_shape(
-    x0=0,
-    x1=0,
-    y0=0-0.35,
-    y1=len(cpi_real_time)-1+0.35,
-    type='line', line_color=alpha_color('#000000', 0.5, 'HEX'), line_width=1)
+# fig_cpi_real_time_groups.add_shape(
+#     x0=0,
+#     x1=0,
+#     y0=0-0.35,
+#     y1=len(cpi_real_time)-1+0.35,
+#     type='line', line_color=alpha_color('#000000', 0.15, 'HEX'), line_width=1)
 
 fig_cpi_real_time_groups.add_shape(
     x0=0,
@@ -570,6 +570,8 @@ fig_cpi_real_time_groups.update_layout(
 )
 
 # cpi real-time trend rolling
+fig_cpi_real_time_trend_width = 2
+
 fig_cpi_real_time_trend = make_subplots(
         rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.1,  row_width=[0.5, 1])
 
@@ -577,7 +579,7 @@ fig_cpi_real_time_trend.add_trace(
     go.Scatter(
         x=cpi_week_rolling_previous.index,
         y=cpi_week_rolling_previous,
-        line=dict(width=2, color=palette[0], shape='spline'),
+        line=dict(width=fig_cpi_real_time_trend_width, color=palette[0], shape='spline'),
         name=str(previous_year),
         hovertemplate='%{y}%'
     ), row=1, col=1
@@ -586,7 +588,7 @@ fig_cpi_real_time_trend.add_trace(
     go.Scatter(
         x=cpi_week_rolling_previous.index,
         y=cpi_week_rolling_current,
-        line=dict(width=2, color=palette[2], shape='spline'),
+        line=dict(width=fig_cpi_real_time_trend_width, color=palette[2], shape='spline'),
         name=str(current_year),
         hovertemplate='%{y}%'
     ), row=1, col=1
@@ -597,7 +599,7 @@ fig_cpi_real_time_trend.add_trace(
         y=[cpi_week_target_value]*len(cpi_week_rolling_previous.index),
         name='Цель ЦБ',
         mode='lines',
-        line=dict(width=2, color=palette[1]),
+        line=dict(width=1, color=palette[1]),
         opacity=cpi_target_opacity,
         showlegend=True,
         hovertemplate='%{y}%'
