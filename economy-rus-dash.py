@@ -985,6 +985,7 @@ header_big_budget = html.Div([
 header_small_inflation = html.Div([
     html.Div([
         html.Div([
+            html.Div([], className='header-small-button-first'),
             html.Div([
                 html.Div([
                     html.A('Инфляция', href='/inflation-and-prices')], className='header-small-button-active')
@@ -998,6 +999,7 @@ header_small_inflation = html.Div([
 header_small_prices = html.Div([
     html.Div([
         html.Div([
+            html.Div([], className='header-small-button-first'),
             html.Div([
                 html.Div([
                     html.A('Инфляция', href='/inflation-and-prices')], className='header-small-button')
