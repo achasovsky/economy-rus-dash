@@ -318,13 +318,11 @@ html hr {
 /* small-header */
 
 .header-small-container {
-    /* background-color: #F6F6F6; */
-    background-color: #3C3D4B;
+    /* background-color: #3C3D4B; */
+    background-color: #494A58;
     width: 100vw;
     display: block;
     height: 4vh;
-    /* display: flex; */
-    /* align-items: center; */
     padding: 0;
     /* border-top: 3px solid #3C3D4B;
     border-bottom: 3px solid #3C3D4B; */
@@ -332,7 +330,8 @@ html hr {
 .header-small-button-first {
     display:inline-block;
     float:left;
-    background-color: #3C3D4B;
+    /* background-color: #3C3D4B; */
+    background-color: #494A58;
     color: #FFFFFF;
     width: 1vw;
     height: 4vh;
@@ -344,7 +343,8 @@ html hr {
 .header-small-button {
     display:inline-block;
     float:left;
-    background-color: #3C3D4B;
+    /* background-color: #3C3D4B; */
+    background-color: #494A58;
     color: #FFFFFF;
     width: 9vw;
     height: 4vh;
