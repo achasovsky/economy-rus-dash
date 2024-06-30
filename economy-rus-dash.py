@@ -40,6 +40,7 @@ pio.templates['primetheme'] = go.layout.Template(
         'paper_bgcolor': '#FFFFFF',  # FAFFFB
         'plot_bgcolor': '#FFFFFF',
         # 'dragmode': 'zoom',
+        'dragmode': False,
         # 'hoverdistance': 0,
         'hidesources': True,
         # 'autosize': False,
@@ -216,7 +217,7 @@ config = dict(
     scrollZoom=False,
     showLink=False,
     displaylogo=False,
-    # displayModeBar=False,
+    displayModeBar=False,
     locale='ru',
     responsive=True,
     toImageButtonOptions={
