@@ -314,7 +314,7 @@ if cpi_real_value > cpi_target_value:
     cpi_target_color = palette[1]
 else:
     cpi_target_color = palette[3]
-cpi_target_opacity = 0.9
+cpi_target_opacity = 1
 cpi_month_value = \
     dt.datetime.strftime(cpi_kipc_primary_perc_period_previous.index[-1], '%B %Y')
 cpi_month_value_sklon = \
@@ -378,7 +378,7 @@ fig_cpi_linechart_this_year.add_trace(
     )
 )
 pl_hline(
-    cpi_target_value, width=2, line_dash='solid', opacity=cpi_target_opacity, color=cpi_target_color,
+    cpi_target_value, width=1, line_dash='solid', opacity=cpi_target_opacity, color=cpi_target_color,
     showlegend=False, figure=fig_cpi_linechart_this_year
 )
 fig_cpi_linechart_this_year.update_layout(
@@ -733,7 +733,7 @@ fig_cpi_kipc.add_trace(
     )
 )
 pl_hline(
-    cpi_target_value, width=2, line_dash='solid', opacity=cpi_target_opacity, color=cpi_target_color,
+    cpi_target_value, width=1, line_dash='solid', opacity=cpi_target_opacity, color=cpi_target_color,
     showlegend=True,
     name='Цель ЦБ',
     figure=fig_cpi_kipc

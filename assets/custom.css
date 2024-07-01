@@ -472,9 +472,12 @@ html hr {
 }
 
 .graph-figure {
-    width: 100%;
-    height: 100%;
+    width: 96%;
+    height: 96%;
     font-family: 'Geologica Roman', 'system-ui';
+    margin: 1%;
+    /* border-radius: 5px; */
+    /* border: 1px solid red; */
 }
 .border-container {
     display:inline-block;
@@ -489,7 +492,7 @@ html hr {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     border: 1px solid #DEDEDE;
-    border-radius: 3px;
+    border-radius: 5px;
     /* box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 3px 0 rgba(0, 0, 0, 0.19); */
 }
 input[type='radio'] {
