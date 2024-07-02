@@ -161,11 +161,13 @@ html hr {
 .vr-grey {
     border-left: 1px solid #E1E1E1;
     float: left;
+    height: 100%;
 }
 .vr-grey-center {
     border-left: 1px solid #E1E1E1;
     float: left;
     margin: auto;
+    height: 100%;
 }
 
 
@@ -366,7 +368,7 @@ html hr {
     float:left;
     /* background-color: #FFFFFF; */
     /* background-color: #F0F1F5; */
-    background-color: #F6F6F6;
+    background-color: #F9F9F9;
     width: 9vw;
     height: 4vh;
     line-height: 4vh;
@@ -398,32 +400,43 @@ html hr {
     -webkit-box-sizing: border-box;
 }
 .inflation-kpi-dash-container {
-    display:flex;
-    width:100%;
-    height:6vh;
-    padding: 0 0 0 1vw;
-    align-items:center;
+    display:inline-block;
+    float:left;
+    width:49%;
+    height:12vh;
+    padding: 0 0 0 0;
+    margin: 2vh 0 0 0;
+    align-items: center;
     box-sizing:border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
+    /* border: 1px solid blue; */
 }
 .inflation-kpi-dash-month {
-    float:left;
-    width:11vw;
-    text-align: right;
+    display:flex;
+    width:100%;
+    height:50%;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
     font-size: 1.3em;
     font-weight: 300;
     color:#353535;
     margin: 0;
-    padding: 0 0 0 0vw;
+    padding: 0 0 0 0;
     /* border: 1px solid red; */
 }
 .inflation-kpi-dash-value {
+    display:flex;
     text-align: center;
-    font-size: 1.75em;
+    align-items: center;
+    justify-content: center;
+    width:100%;
+    height:50%;
+    font-size: 1.9em;
     font-weight: 500;
     margin: 0 0 0 0;
-    padding: 0 0 0 1.5vw;
+    padding: 0 0 0 0;
     /* margin-bottom: -1vh; */
     /* border: 1px solid green; */
 }
@@ -459,12 +472,12 @@ html hr {
     font-weight: 200;
     font-size: 0.85em;
     /* background-color: #F0F1F5; */
-    background-color: #F6F6F6;
+    background-color: #F9F9F9;
 }
 
 .page-container {
     /* background-color: #F0F1F5; */
-    background-color: #F6F6F6;
+    background-color: #F9F9F9;
     width: 98vw;
     height: 100%;
     margin: 0 1vw 5vh 1vw;

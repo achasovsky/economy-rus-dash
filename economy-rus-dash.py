@@ -925,14 +925,14 @@ inflation_forecasts = html.Div([
 inflation_real_target = html.Div([
     html.H6('Текущее значение', className='dash-title'),
     html.Div([
-        html.H5(f'{current_month_rus_year}', className='inflation-kpi-dash-month'),
-        html.P(f'{cpi_real_value} %', style={'color': f'{cpi_real_color}', 'margin':'0 0 0.1em 0'}, className='inflation-kpi-dash-value')
-    ], className='inflation-kpi-dash-container', style={'margin-top':'1.8vh'}),
-    html.Div([], className='hr-grey-center', style={'width':'94%'}),
+        html.H5('Цель ЦБ', className='inflation-kpi-dash-month'),
+        html.P(f'{cpi_target_value} %', style={'color': f'{cpi_target_color}'}, className='inflation-kpi-dash-value')
+    ], className='inflation-kpi-dash-container',  style={'width':'45%'}),
+    html.Div([], className='vr-grey-center', style={'height':'58%', 'margin':'2vh 0 0 0'}),
     html.Div([
-        html.H5('Цель ЦБ', className='inflation-kpi-dash-month', style={'margin':'0.1em 0 0 0'}),
-        html.P(f'{cpi_target_value} %', style={'color': f'{cpi_target_color}', 'margin':'0.1em 0 0 0'}, className='inflation-kpi-dash-value')
-    ], className='inflation-kpi-dash-container'),
+        html.H5(f'{current_month_rus_year}', className='inflation-kpi-dash-month'),
+        html.P(f'{cpi_real_value} %', style={'color': f'{cpi_real_color}'}, className='inflation-kpi-dash-value')
+    ], className='inflation-kpi-dash-container', style={'width':'54%'}),
 ], style={'width':'100%', 'height': '100%'})
 
 header_big = html.Div([
