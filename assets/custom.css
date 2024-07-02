@@ -405,7 +405,7 @@ html hr {
     width:49%;
     height:12vh;
     padding: 0 0 0 0;
-    margin: 2vh 0 0 0;
+    margin: 1vh 0 0 0;
     align-items: center;
     box-sizing:border-box;
     -moz-box-sizing: border-box;
@@ -416,7 +416,7 @@ html hr {
     display:flex;
     width:100%;
     height:50%;
-    align-items: center;
+    align-items: end;
     text-align: center;
     justify-content: center;
     font-size: 1.3em;
@@ -433,9 +433,9 @@ html hr {
     justify-content: center;
     width:100%;
     height:50%;
-    font-size: 1.9em;
+    font-size: 1.5em;
     font-weight: 500;
-    margin: 0 0 0 0;
+    margin: 0 0 0 0.5vw;
     padding: 0 0 0 0;
     /* margin-bottom: -1vh; */
     /* border: 1px solid green; */
