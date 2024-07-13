@@ -1,3 +1,4 @@
-## Дашборд 'Экономика России'
+<!-- ## Дашборд 'Экономика России' -->
 
-Ссылка на дашборд: https://economy-rus-dash.onrender.com/inflation-and-prices
+### Ссылка на дашборд
+https://economy-rus-dash.onrender.com/inflation-and-prices
