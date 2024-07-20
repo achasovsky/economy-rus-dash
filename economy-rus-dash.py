@@ -628,17 +628,17 @@ fig_cpi_real_time_trend.add_trace(
         name='Разность 2024 и 2023',
         showlegend=True,
         hoverinfo='skip',
-        marker_color=palette[2]
+        marker_color=palette[2],
     ), row=2, col=1
 )
 fig_cpi_real_time_trend.add_annotation(
-    text='1. Считается средняя инфляция по всем категориям товаров за 4 недели.',
-    x=-0.005, y=-0.275,
+    text='*Используется средняя инфляция по всем категориям товаров за 4 недели.',
+    x=-0.005, y=-0.295,
     xref="paper", yref="paper",
     showarrow=False,
 )
 fig_cpi_real_time_trend.update_layout(
-    margin=dict(t=10, b=60, r=20, l=50),
+    margin=dict(t=10, b=55, r=20, l=50),
     xaxis1=dict(
         ticks='',
         dtick='M1',
@@ -668,7 +668,7 @@ fig_cpi_real_time_trend.update_layout(
     hoverlabel=dict(
         bgcolor='rgba(255, 255, 255, 0.9)'
     ),
-    bargap=0.35,
+    bargap=0.5,
     modebar=dict(
         orientation='v'
     ),
